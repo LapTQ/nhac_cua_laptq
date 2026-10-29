@@ -1468,35 +1468,48 @@ class SymphonyApp {
   }
 
   /* ==========================================================================
-     SETTINGS MODAL & 1-CLICK SYNC (2 TABS: CLOUDFLARE R2 & RAPIDAPI YOUTUBE-MP36)
+     SETTINGS MODAL & 1-CLICK SYNC (3 TABS: ĐỒNG BỘ 1-CHẠM, CLOUDFLARE R2 & RAPIDAPI)
      ========================================================================== */
 
-  switchSettingsTab(tab = 'r2') {
+  switchSettingsTab(tab = 'sync') {
+    const tabBtnSync = document.getElementById('tab-btn-sync');
     const tabBtnR2 = document.getElementById('tab-btn-r2');
     const tabBtnRapid = document.getElementById('tab-btn-rapidapi');
+
+    const panelSync = document.getElementById('tab-panel-sync');
     const panelR2 = document.getElementById('tab-panel-r2');
     const panelRapid = document.getElementById('tab-panel-rapidapi');
 
-    if (tab === 'rapidapi') {
-      tabBtnRapid?.classList.add('border-white', 'text-white');
-      tabBtnRapid?.classList.remove('border-transparent', 'text-zinc-400');
-      panelRapid?.classList.remove('hidden');
+    const tabs = [
+      { id: 'sync', btn: tabBtnSync, panel: panelSync },
+      { id: 'r2', btn: tabBtnR2, panel: panelR2 },
+      { id: 'rapidapi', btn: tabBtnRapid, panel: panelRapid }
+    ];
 
-      tabBtnR2?.classList.add('border-transparent', 'text-zinc-400');
-      tabBtnR2?.classList.remove('border-white', 'text-white');
-      panelR2?.classList.add('hidden');
-    } else {
-      tabBtnR2?.classList.add('border-white', 'text-white');
-      tabBtnR2?.classList.remove('border-transparent', 'text-zinc-400');
-      panelR2?.classList.remove('hidden');
+    tabs.forEach(({ id, btn, panel }) => {
+      if (id === tab) {
+        btn?.classList.add('border-white', 'text-white');
+        btn?.classList.remove('border-transparent', 'text-zinc-400');
+        panel?.classList.remove('hidden');
+      } else {
+        btn?.classList.add('border-transparent', 'text-zinc-400');
+        btn?.classList.remove('border-white', 'text-white');
+        panel?.classList.add('hidden');
+      }
+    });
 
-      tabBtnRapid?.classList.add('border-transparent', 'text-zinc-400');
-      tabBtnRapid?.classList.remove('border-white', 'text-white');
-      panelRapid?.classList.add('hidden');
+    if (tab === 'sync') {
+      const exportInput = document.getElementById('export-base64-input');
+      if (this.storageAdapter.hasConfig()) {
+        const b64 = this.exportConfigBase64(this.storageAdapter.config, this.youtubeAdapter.config);
+        if (exportInput) exportInput.value = b64;
+      } else if (exportInput) {
+        exportInput.value = '';
+      }
     }
   }
 
-  openSettingsModal(initialTab = 'r2') {
+  openSettingsModal(initialTab = 'sync') {
     const modal = document.getElementById('modal-settings');
     if (!modal) return;
 
@@ -1565,6 +1578,7 @@ class SymphonyApp {
     document.getElementById('btn-close-settings')?.addEventListener('click', () => this.closeSettingsModal());
 
     // Tab navigation buttons
+    document.getElementById('tab-btn-sync')?.addEventListener('click', () => this.switchSettingsTab('sync'));
     document.getElementById('tab-btn-r2')?.addEventListener('click', () => this.switchSettingsTab('r2'));
     document.getElementById('tab-btn-rapidapi')?.addEventListener('click', () => this.switchSettingsTab('rapidapi'));
 

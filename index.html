@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Symphony R2 - Trình Nghe Nhạc Cá Nhân</title>
+    <title>Nhạc của Lập</title>
     <meta name="description" content="Trình nghe nhạc cá nhân PWA tối giản, đồng bộ Cloudflare R2 và lưu trữ offline IndexedDB" />
-    <meta property="og:title" content="Symphony R2 - Trình Nghe Nhạc Cá Nhân" />
+    <meta property="og:title" content="Nhạc của Lập" />
     <meta property="og:description" content="Trình nghe nhạc cá nhân PWA tối giản, đồng bộ Cloudflare R2 và lưu trữ offline IndexedDB" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -356,26 +356,34 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- 1. Settings Modal: 2 Tabs (Cloudflare R2 & RapidAPI youtube-mp36) -->
+    <!-- 1. Settings Modal: 3 Tabs (Đồng Bộ 1-Chạm, Cloudflare R2 & RapidAPI youtube-mp36) -->
     <div id="modal-settings" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
       <div class="w-full max-w-md rounded-xl bg-zinc-900 border border-zinc-800 shadow-xl p-5 sm:p-6 my-8">
         
         <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
           <div>
             <h2 class="text-base font-semibold text-white">Cài Đặt Hệ Thống</h2>
-            <p class="text-xs text-zinc-400">Cloudflare R2 & RapidAPI YouTube-MP36</p>
+            <p class="text-xs text-zinc-400">Đồng Bộ, Cloudflare R2 & RapidAPI</p>
           </div>
           <button id="btn-close-settings" class="p-1 rounded-md text-zinc-400 hover:text-white">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
 
-        <!-- 2 Tabs Navigation -->
+        <!-- 3 Tabs Navigation -->
         <div class="flex border-b border-zinc-800 mt-3">
           <button 
             type="button" 
-            id="tab-btn-r2" 
+            id="tab-btn-sync" 
             class="flex-1 py-2 text-xs font-semibold border-b-2 border-white text-white flex items-center justify-center gap-1.5 transition"
+          >
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Đồng Bộ 1-Chạm</span>
+          </button>
+          <button 
+            type="button" 
+            id="tab-btn-r2" 
+            class="flex-1 py-2 text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1.5 transition"
           >
             <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
             <span>Cloudflare R2</span>
@@ -390,8 +398,77 @@
           </button>
         </div>
 
-        <!-- Tab 1 Panel: Cloudflare R2 -->
-        <div id="tab-panel-r2" class="space-y-3.5 pt-4">
+        <!-- Tab 1 Panel: Đồng Bộ 1-Chạm -->
+        <div id="tab-panel-sync" class="space-y-4 pt-4">
+          <div class="p-3 rounded-lg bg-zinc-950/60 border border-zinc-800/80 text-xs text-zinc-400 leading-relaxed">
+            <div class="flex items-center gap-1.5 text-zinc-200 font-medium mb-1">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Chuyển cấu hình giữa Laptop & Điện thoại</span>
+            </div>
+            <p class="text-[11px] text-zinc-400">
+              Sao chép mã cấu hình từ thiết bị này để dán vào thiết bị khác (bao gồm cả Cloudflare R2 và RapidAPI) chỉ trong 1 thao tác.
+            </p>
+          </div>
+
+          <!-- Section 1: Xuất cấu hình -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-medium text-zinc-300" for="export-base64-input">
+                1. Mã cấu hình thiết bị này (Export)
+              </label>
+              <span class="text-[10px] text-zinc-500">Gồm R2 & RapidAPI</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input 
+                id="export-base64-input" 
+                type="text" 
+                readonly 
+                placeholder="Chưa có cấu hình để xuất" 
+                class="flex-1 px-2.5 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 font-mono select-all focus:outline-none"
+              />
+              <button 
+                id="btn-copy-export" 
+                type="button"
+                class="px-2.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition flex items-center gap-1 shrink-0"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Sao chép</span>
+              </button>
+            </div>
+            <p class="text-[11px] text-zinc-500">
+              Bấm <strong>Sao chép</strong> rồi gửi mã này qua Zalo/Tin nhắn đến điện thoại hoặc laptop mới của bạn.
+            </p>
+          </div>
+
+          <!-- Section 2: Nhập cấu hình -->
+          <div class="space-y-2 pt-3 border-t border-zinc-800/80">
+            <label class="block text-xs font-medium text-zinc-300" for="import-base64-input">
+              2. Dán mã từ thiết bị khác (Import)
+            </label>
+            <div class="flex items-center gap-2">
+              <input 
+                id="import-base64-input" 
+                type="text" 
+                placeholder="Dán mã Base64 vào đây..." 
+                class="flex-1 px-2.5 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-100 font-mono focus:outline-none focus:border-zinc-500"
+              />
+              <button 
+                id="btn-apply-import" 
+                type="button"
+                class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition flex items-center gap-1 shrink-0"
+              >
+                <i data-lucide="check" class="w-3 h-3"></i>
+                <span>Dán & Lưu</span>
+              </button>
+            </div>
+            <p class="text-[11px] text-zinc-500">
+              Dán mã nhận được từ thiết bị đã cài đặt và nhấn <strong>Dán & Lưu</strong> để đồng bộ tức thì.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 2 Panel: Cloudflare R2 -->
+        <div id="tab-panel-r2" class="space-y-3.5 pt-4 hidden">
           <form id="form-r2-settings" class="space-y-3.5">
             <!-- R2 Endpoint -->
             <div>
@@ -471,58 +548,15 @@
             </div>
           </form>
 
-          <!-- 1-Click Sync Section (Laptop <-> Mobile) -->
-          <div class="mt-5 pt-4 border-t border-zinc-800">
-            <h3 class="text-xs font-semibold text-zinc-200 mb-1">Đồng Bộ 1-Chạm (Laptop & Điện thoại)</h3>
-            <p class="text-[11px] text-zinc-500 mb-2.5">
-              Sao chép mã cấu hình để dán vào thiết bị khác (bao gồm cả R2 và RapidAPI).
-            </p>
-
-            <div class="flex items-center gap-2 mb-2.5">
-              <input 
-                id="export-base64-input" 
-                type="text" 
-                readonly 
-                placeholder="Chưa có cấu hình" 
-                class="flex-1 px-2.5 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 font-mono select-all"
-              />
-              <button 
-                id="btn-copy-export" 
-                type="button"
-                class="px-2.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition flex items-center gap-1"
-              >
-                <i data-lucide="copy" class="w-3 h-3"></i>
-                <span>Sao chép</span>
-              </button>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <input 
-                id="import-base64-input" 
-                type="text" 
-                placeholder="Dán mã Base64 vào đây..." 
-                class="flex-1 px-2.5 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-100 font-mono"
-              />
-              <button 
-                id="btn-apply-import" 
-                type="button"
-                class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition flex items-center gap-1"
-              >
-                <i data-lucide="check" class="w-3 h-3"></i>
-                <span>Dán & Lưu</span>
-              </button>
-            </div>
-
-            <div class="mt-3 p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 leading-relaxed">
-              <strong class="text-zinc-200">Quy tắc CORS trên Cloudflare R2:</strong>
-              <code class="block font-mono bg-zinc-900 p-1.5 rounded mt-1 text-[10px] text-zinc-300 overflow-x-auto">
-                AllowedOrigins: ["*"] | AllowedMethods: ["GET", "PUT", "DELETE", "HEAD"]
-              </code>
-            </div>
+          <div class="mt-4 p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 leading-relaxed">
+            <strong class="text-zinc-200">Quy tắc CORS trên Cloudflare R2:</strong>
+            <code class="block font-mono bg-zinc-900 p-1.5 rounded mt-1 text-[10px] text-zinc-300 overflow-x-auto">
+              AllowedOrigins: ["*"] | AllowedMethods: ["GET", "PUT", "DELETE", "HEAD"]
+            </code>
           </div>
         </div>
 
-        <!-- Tab 2 Panel: RapidAPI YouTube-MP36 -->
+        <!-- Tab 3 Panel: RapidAPI YouTube-MP36 -->
         <div id="tab-panel-rapidapi" class="space-y-3.5 pt-4 hidden">
           <form id="form-rapidapi-settings" class="space-y-3.5">
             <!-- RapidAPI Key -->
