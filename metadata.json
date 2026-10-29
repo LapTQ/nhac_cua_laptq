@@ -1,6 +1,6 @@
 {
-  "name": "Symphony R2 - PWA Serverless Music Player",
-  "description": "Ứng dụng nghe nhạc cá nhân PWA Serverless đồng bộ Cloudflare R2 và lưu trữ offline IndexedDB",
+  "name": "Nhạc của Lập",
+  "description": "Nhạc của Lập",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

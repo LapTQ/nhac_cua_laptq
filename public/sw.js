@@ -1,5 +1,5 @@
 /**
- * Symphony R2 - Service Worker (sw.js)
+ * Nhạc của Lập - Service Worker (sw.js)
  * Caches static shell, scripts, styles, icons, and CDN bundles for offline usage.
  * Large audio files are stored in IndexedDB (PersonalMusicDB) rather than CacheStorage.
  */

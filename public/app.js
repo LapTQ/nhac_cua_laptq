@@ -1,5 +1,5 @@
 /**
- * Symphony R2 - PWA Serverless Music Player (Minimalist Edition)
+ * Nhạc của Lập - PWA Serverless Music Player (Minimalist Edition)
  * Clean Architecture with S3/R2 Storage Adapter, IndexedDB Offline Adapter,
  * Audio Player Controller, Media Session API, and Minimalist UI.
  * Zero-build compatible (ES Modules, ESM CDN).
@@ -814,7 +814,7 @@ class AudioPlayerController {
     try {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.currentSong.title,
-        artist: 'Symphony R2',
+        artist: 'Nhạc của Lập',
         album: (this.currentSong.tags && this.currentSong.tags.join(', ')) || 'Kho Nhạc',
         artwork: [
           { src: './pwa-192x192.png', sizes: '192x192', type: 'image/png' },
