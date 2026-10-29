@@ -1297,8 +1297,8 @@ class SymphonyApp {
 
     if (powerLed) {
       powerLed.className = isOnline 
-        ? 'absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white'
-        : 'absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-500 ring-2 ring-white';
+        ? 'absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#0B0813]'
+        : 'absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-[#0B0813]';
     }
 
     if (storageText) {
@@ -1503,13 +1503,13 @@ class SymphonyApp {
 
     tabs.forEach(({ id, btn, panel }) => {
       if (id === tab) {
-        btn?.classList.add('border-purple-600', 'text-purple-700', 'font-semibold');
-        btn?.classList.remove('border-transparent', 'text-zinc-500', 'font-medium');
+        btn?.classList.add('border-purple-500', 'text-purple-300', 'font-semibold');
+        btn?.classList.remove('border-transparent', 'text-purple-400/60', 'font-medium');
         panel?.classList.remove('hidden');
         if (panel) panel.style.display = '';
       } else {
-        btn?.classList.add('border-transparent', 'text-zinc-500', 'font-medium');
-        btn?.classList.remove('border-purple-600', 'text-purple-700', 'font-semibold');
+        btn?.classList.add('border-transparent', 'text-purple-400/60', 'font-medium');
+        btn?.classList.remove('border-purple-500', 'text-purple-300', 'font-semibold');
         panel?.classList.add('hidden');
         if (panel) panel.style.display = 'none';
       }
@@ -1888,7 +1888,7 @@ class SymphonyApp {
     }
 
     wrapper.innerHTML = allTags.slice(0, 8).map(t => `
-      <button type="button" class="upload-tag-chip px-2 py-0.5 rounded bg-purple-50 hover:bg-purple-100 text-[11px] text-purple-700 border border-purple-200 transition" data-tag="${escapeHTML(t.tag)}">
+      <button type="button" class="upload-tag-chip px-2 py-0.5 rounded bg-purple-900/60 hover:bg-purple-800 text-[11px] text-purple-200 border border-purple-700/50 transition" data-tag="${escapeHTML(t.tag)}">
         + ${escapeHTML(t.tag)}
       </button>
     `).join('');
@@ -1961,22 +1961,22 @@ class SymphonyApp {
 
     container.classList.remove('hidden');
     container.innerHTML = this.stagedUploadFiles.map((item, idx) => `
-      <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-purple-50/40 border border-purple-200 text-xs">
+      <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs">
         <div class="min-w-0 flex-1">
           <input 
             type="text" 
             value="${escapeHTML(item.title)}" 
             data-index="${idx}"
-            class="staged-file-title-input w-full bg-transparent text-zinc-900 font-medium focus:outline-none border-b border-purple-300 focus:border-purple-600 pb-0.5"
+            class="staged-file-title-input w-full bg-transparent text-slate-100 font-medium focus:outline-none border-b border-purple-800 focus:border-purple-400 pb-0.5"
             placeholder="Tên bài hát"
           />
-          <div class="text-[10px] text-zinc-500 mt-1 flex items-center gap-1.5 font-mono">
+          <div class="text-[10px] text-purple-400/60 mt-1 flex items-center gap-1.5 font-mono">
             <span>${formatDuration(item.duration)}</span>
             <span>•</span>
             <span>${formatFileSize(item.size)}</span>
           </div>
         </div>
-        <button type="button" class="btn-remove-staged text-zinc-400 hover:text-red-500 p-1" data-index="${idx}">
+        <button type="button" class="btn-remove-staged text-purple-400/60 hover:text-red-400 p-1" data-index="${idx}">
           <i data-lucide="trash" class="w-3.5 h-3.5"></i>
         </button>
       </div>
@@ -2083,16 +2083,16 @@ class SymphonyApp {
 
     dropzone?.addEventListener('dragover', (e) => {
       e.preventDefault();
-      dropzone.classList.add('border-purple-500', 'bg-purple-100/50');
+      dropzone.classList.add('border-purple-400', 'bg-purple-950/70');
     });
 
     dropzone?.addEventListener('dragleave', () => {
-      dropzone.classList.remove('border-purple-500', 'bg-purple-100/50');
+      dropzone.classList.remove('border-purple-400', 'bg-purple-950/70');
     });
 
     dropzone?.addEventListener('drop', (e) => {
       e.preventDefault();
-      dropzone.classList.remove('border-purple-500', 'bg-purple-100/50');
+      dropzone.classList.remove('border-purple-400', 'bg-purple-950/70');
       if (e.dataTransfer && e.dataTransfer.files) {
         this.stageFiles(e.dataTransfer.files);
       }
@@ -2294,14 +2294,14 @@ class SymphonyApp {
     if (!wrapper) return;
 
     if (this.currentEditingTags.length === 0) {
-      wrapper.innerHTML = '<span class="text-xs text-zinc-400">Chưa có tag nào</span>';
+      wrapper.innerHTML = '<span class="text-xs text-purple-400/40">Chưa có tag nào</span>';
       return;
     }
 
     wrapper.innerHTML = this.currentEditingTags.map((tag, idx) => `
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-xs font-medium border border-purple-200">
+      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-900/70 text-purple-200 text-xs font-medium border border-purple-700/60">
         <span>${escapeHTML(tag)}</span>
-        <button type="button" class="btn-remove-editing-tag text-purple-500 hover:text-purple-800" data-index="${idx}">
+        <button type="button" class="btn-remove-editing-tag text-purple-400 hover:text-white" data-index="${idx}">
           <i data-lucide="x" class="w-3 h-3"></i>
         </button>
       </span>
@@ -2324,7 +2324,7 @@ class SymphonyApp {
 
     const allTags = this.extractAllTags();
     container.innerHTML = allTags.map(t => `
-      <button type="button" class="btn-quick-add-tag px-2 py-0.5 rounded bg-purple-50 hover:bg-purple-100 text-[11px] text-purple-700 border border-purple-200 transition" data-tag="${escapeHTML(t.tag)}">
+      <button type="button" class="btn-quick-add-tag px-2 py-0.5 rounded bg-purple-950/70 hover:bg-purple-900 text-[11px] text-purple-300 border border-purple-800/40 transition" data-tag="${escapeHTML(t.tag)}">
         + ${escapeHTML(t.tag)}
       </button>
     `).join('');
@@ -2412,21 +2412,21 @@ class SymphonyApp {
 
     const allTags = this.extractAllTags();
     if (allTags.length === 0) {
-      container.innerHTML = '<p class="text-xs text-zinc-400 py-3 text-center">Chưa có tag nào trong thư viện.</p>';
+      container.innerHTML = '<p class="text-xs text-purple-400/40 py-3 text-center">Chưa có tag nào trong thư viện.</p>';
       return;
     }
 
     container.innerHTML = allTags.map(item => `
-      <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-purple-50/40 border border-purple-200 text-xs">
+      <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-[#181130] border border-purple-800/40 text-xs">
         <div class="flex items-center gap-1.5">
-          <span class="font-medium text-zinc-800">${escapeHTML(item.tag)}</span>
-          <span class="text-[10px] text-purple-700">(${item.count})</span>
+          <span class="font-medium text-slate-100">${escapeHTML(item.tag)}</span>
+          <span class="text-[10px] text-purple-400">(${item.count})</span>
         </div>
         <div class="flex items-center gap-1">
-          <button class="btn-rename-tag px-2 py-0.5 rounded bg-purple-100 hover:bg-purple-200 text-purple-700 text-[11px] font-medium border border-purple-200" data-tag="${escapeHTML(item.tag)}">
+          <button class="btn-rename-tag px-2 py-0.5 rounded bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-700/50 text-[11px] font-medium" data-tag="${escapeHTML(item.tag)}">
             Đổi tên
           </button>
-          <button class="btn-delete-tag p-1 text-zinc-400 hover:text-red-500" data-tag="${escapeHTML(item.tag)}" title="Xoá tag này">
+          <button class="btn-delete-tag p-1 text-purple-400/60 hover:text-red-400" data-tag="${escapeHTML(item.tag)}" title="Xoá tag này">
             <i data-lucide="trash" class="w-3.5 h-3.5"></i>
           </button>
         </div>
@@ -2818,19 +2818,19 @@ class SymphonyApp {
 
     if (badgeAll) {
       badgeAll.textContent = this.library.songs.length;
-      badgeAll.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-100 text-purple-800' : 'bg-purple-700 text-white'} text-[11px]`;
+      badgeAll.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-950/80 text-purple-300 border border-purple-800/50' : 'bg-purple-950/90 text-purple-200 border border-purple-700/60'} text-[11px]`;
     }
     if (badgeOffline) {
       badgeOffline.textContent = this.cachedSongIds.size;
-      badgeOffline.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-700 text-white' : 'bg-purple-100 text-purple-800'} text-[11px]`;
+      badgeOffline.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-950/90 text-purple-200 border border-purple-700/60' : 'bg-[#241A45] text-purple-300 border border-purple-800/40'} text-[11px]`;
     }
 
     if (this.offlineOnly) {
-      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-zinc-700 hover:text-purple-700 hover:bg-purple-50 font-medium text-xs border border-purple-200 transition shadow-sm';
-      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 text-white font-medium text-xs transition shadow-sm';
+      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm';
+      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40';
     } else {
-      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 text-white font-medium text-xs transition shadow-sm';
-      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-zinc-700 hover:text-purple-700 hover:bg-purple-50 font-medium text-xs border border-purple-200 transition shadow-sm';
+      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40';
+      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm';
     }
   }
 
@@ -2840,15 +2840,15 @@ class SymphonyApp {
 
     const allTags = this.extractAllTags();
     if (allTags.length === 0) {
-      wrapper.innerHTML = '<span class="text-xs text-zinc-400">Chưa có tag nào</span>';
+      wrapper.innerHTML = '<span class="text-xs text-purple-400/40">Chưa có tag nào</span>';
       return;
     }
 
     wrapper.innerHTML = allTags.map(item => {
       const isSelected = this.selectedTags.has(item.tag);
       const activeClass = isSelected 
-        ? 'bg-purple-600 text-white font-medium shadow-sm' 
-        : 'bg-white text-zinc-700 hover:text-purple-700 hover:bg-purple-50 border border-purple-200 shadow-sm';
+        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-md shadow-purple-900/40' 
+        : 'bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] border border-purple-800/40 transition shadow-sm';
 
       return `
         <button 
@@ -2916,46 +2916,46 @@ class SymphonyApp {
       let offlineBtnHtml = '';
       if (isDownloading) {
         offlineBtnHtml = `
-          <button class="p-1.5 rounded-md text-purple-600 cursor-wait" title="Đang tải về máy...">
+          <button class="p-1.5 rounded-md text-purple-400 cursor-wait" title="Đang tải về máy...">
             <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
           </button>
         `;
       } else if (isCached) {
         offlineBtnHtml = `
-          <button class="btn-toggle-offline p-1.5 rounded-md text-emerald-600 hover:text-red-500 hover:bg-purple-50 transition group" data-song-id="${song.id}" title="Đã lưu offline (Bấm để xoá giải phóng bộ nhớ)">
+          <button class="btn-toggle-offline p-1.5 rounded-md text-emerald-400 hover:text-red-400 hover:bg-purple-900/40 transition group" data-song-id="${song.id}" title="Đã lưu offline (Bấm để xoá giải phóng bộ nhớ)">
             <i data-lucide="check" class="w-4 h-4 group-hover:hidden"></i>
             <i data-lucide="trash" class="w-4 h-4 hidden group-hover:block"></i>
           </button>
         `;
       } else {
         offlineBtnHtml = `
-          <button class="btn-toggle-offline p-1.5 rounded-md text-zinc-400 hover:text-purple-600 hover:bg-purple-50 transition" data-song-id="${song.id}" title="Tải về máy để nghe Offline">
+          <button class="btn-toggle-offline p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Tải về máy để nghe Offline">
             <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
           </button>
         `;
       }
 
       const activeBgClass = isCurrentSong 
-        ? 'bg-purple-50/80 border-purple-300 shadow-sm' 
-        : 'bg-white hover:bg-purple-50/40 border-purple-100/90 shadow-sm';
+        ? 'bg-[#241747]/90 border-purple-500/60 shadow-lg shadow-purple-950/60' 
+        : 'bg-[#140F27]/80 hover:bg-[#1C1536] border-purple-900/30 hover:border-purple-700/50 shadow-sm';
 
       const initialPlayState = isCurrentlyPlaying ? 'playing' : (isCurrentSong ? 'paused' : 'idle');
-      let playBtnClass = 'bg-purple-50 text-purple-700 hover:bg-purple-600 hover:text-white';
+      let playBtnClass = 'bg-[#20183B] text-purple-300 hover:text-white hover:bg-purple-600';
       let playBtnTitle = 'Phát bài này';
       let playIconHtml = '<i data-lucide="play" class="w-3.5 h-3.5 ml-0.5"></i>';
 
       if (initialPlayState === 'playing') {
-        playBtnClass = 'bg-purple-600 text-white shadow-md shadow-purple-600/30 ring-2 ring-purple-300';
+        playBtnClass = 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md shadow-purple-600/50 ring-2 ring-purple-400/50';
         playBtnTitle = 'Tạm dừng';
         playIconHtml = '<i data-lucide="pause" class="w-3.5 h-3.5 fill-white"></i>';
       } else if (initialPlayState === 'paused') {
-        playBtnClass = 'bg-purple-100 text-purple-700 hover:bg-purple-200';
+        playBtnClass = 'bg-purple-900/70 text-purple-200 hover:bg-purple-800';
         playBtnTitle = 'Tiếp tục phát';
-        playIconHtml = '<i data-lucide="play" class="w-3.5 h-3.5 fill-purple-700 ml-0.5"></i>';
+        playIconHtml = '<i data-lucide="play" class="w-3.5 h-3.5 fill-purple-300 ml-0.5"></i>';
       }
 
       return `
-        <div class="song-row flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-lg border transition ${activeBgClass}" data-song-id="${song.id}">
+        <div class="song-row flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border transition ${activeBgClass}" data-song-id="${song.id}">
           
           <!-- Left: Play/Pause & Song Info -->
           <div class="flex items-center gap-3 min-w-0 flex-1">
@@ -2965,17 +2965,17 @@ class SymphonyApp {
 
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-purple-900/50">${String(index + 1).padStart(2, '0')}</span>
-                <h4 class="text-xs sm:text-sm font-medium text-zinc-900 truncate ${isCurrentSong ? 'text-purple-950 font-semibold' : ''}">${escapeHTML(song.title)}</h4>
+                <span class="text-xs font-mono text-purple-400/50">${String(index + 1).padStart(2, '0')}</span>
+                <h4 class="text-xs sm:text-sm font-medium truncate ${isCurrentSong ? 'text-purple-200 font-semibold' : 'text-slate-100'}">${escapeHTML(song.title)}</h4>
               </div>
 
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
-                <span class="text-[11px] font-mono text-zinc-500">${formatDuration(song.duration)}</span>
-                <span class="text-purple-200">•</span>
-                <span class="text-[11px] font-mono text-zinc-500">${formatFileSize(song.size)}</span>
+                <span class="text-[11px] font-mono text-purple-300/60">${formatDuration(song.duration)}</span>
+                <span class="text-purple-900/80">•</span>
+                <span class="text-[11px] font-mono text-purple-300/60">${formatFileSize(song.size)}</span>
                 
                 ${(song.tags || []).map(t => `
-                  <span class="inline-block px-1.5 py-0.2 rounded text-[10px] bg-purple-50 text-purple-700 border border-purple-200/60 font-medium">
+                  <span class="inline-block px-1.5 py-0.2 rounded text-[10px] bg-purple-950/70 text-purple-300 border border-purple-800/40 font-medium">
                     #${escapeHTML(t)}
                   </span>
                 `).join('')}
@@ -2987,11 +2987,11 @@ class SymphonyApp {
           <div class="flex items-center gap-1 flex-shrink-0">
             ${offlineBtnHtml}
 
-            <button class="btn-edit-song p-1.5 rounded-md text-zinc-400 hover:text-purple-600 hover:bg-purple-50 transition" data-song-id="${song.id}" title="Sửa tên và tags">
+            <button class="btn-edit-song p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Sửa tên và tags">
               <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
             </button>
 
-            <button class="btn-delete-song p-1.5 rounded-md text-zinc-400 hover:text-red-500 hover:bg-purple-50 transition" data-song-id="${song.id}" title="Xoá bài hát">
+            <button class="btn-delete-song p-1.5 rounded-md text-purple-400/60 hover:text-red-400 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Xoá bài hát">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
           </div>
@@ -3062,17 +3062,17 @@ class SymphonyApp {
 
     const playerSource = document.getElementById('player-source-indicator');
     let sourceLabel = 'CHỜ PHÁT';
-    let sourceColorClass = 'bg-purple-50 text-purple-700 border-purple-200';
+    let sourceColorClass = 'bg-[#18132A] text-purple-400 border-purple-800/40';
 
     if (this.player.activeSource === 'offline') {
       sourceLabel = 'OFFLINE';
-      sourceColorClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      sourceColorClass = 'bg-emerald-950/80 text-emerald-400 border-emerald-800/50';
     } else if (this.player.activeSource === 'r2-stream') {
       sourceLabel = 'R2 STREAM';
-      sourceColorClass = 'bg-purple-100 text-purple-800 border-purple-300';
+      sourceColorClass = 'bg-purple-950/80 text-purple-300 border-purple-700/50';
     } else if (this.player.activeSource === 'demo') {
       sourceLabel = 'DEMO';
-      sourceColorClass = 'bg-amber-50 text-amber-700 border-amber-200';
+      sourceColorClass = 'bg-amber-950/80 text-amber-400 border-amber-800/50';
     }
 
     if (playerSource) {
@@ -3116,11 +3116,11 @@ class SymphonyApp {
     // 1. Shuffle button state (independent toggle)
     if (shuffleBtn) {
       if (this.player.isShuffle) {
-        shuffleBtn.className = 'p-1.5 rounded-md text-purple-700 bg-purple-100 border border-purple-300 shadow-sm transition';
+        shuffleBtn.className = 'p-1.5 rounded-md text-purple-200 bg-purple-900/60 border border-purple-600/60 shadow-sm transition';
         shuffleBtn.title = 'Tắt phát ngẫu nhiên (Đang bật)';
         shuffleBtn.setAttribute('aria-pressed', 'true');
       } else {
-        shuffleBtn.className = 'p-1.5 rounded-md text-zinc-400 hover:text-purple-600 hover:bg-purple-50 transition';
+        shuffleBtn.className = 'p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/30 transition';
         shuffleBtn.title = 'Bật phát ngẫu nhiên (Đang tắt)';
         shuffleBtn.setAttribute('aria-pressed', 'false');
       }
@@ -3129,7 +3129,7 @@ class SymphonyApp {
     // 2. Loop button state (3 distinct modes: all, one, none)
     if (loopBtn) {
       if (this.player.loopMode === 'one') {
-        loopBtn.className = 'p-1.5 rounded-md text-purple-700 bg-purple-100 border border-purple-300 transition relative shadow-sm';
+        loopBtn.className = 'p-1.5 rounded-md text-purple-200 bg-purple-900/60 border border-purple-600/60 transition relative shadow-sm';
         loopBtn.title = 'Chế độ lặp: Lặp 1 bài (Bấm để tắt lặp)';
         loopBtn.setAttribute('aria-label', 'Lặp 1 bài');
         if (loopBadge) {
@@ -3137,21 +3137,21 @@ class SymphonyApp {
           loopBadge.className = 'absolute -top-1 -right-1 text-[9px] font-mono font-bold text-white bg-purple-600 px-1 rounded-full leading-none';
         }
       } else if (this.player.loopMode === 'none') {
-        loopBtn.className = 'p-1.5 rounded-md text-zinc-400 hover:text-purple-600 hover:bg-purple-50 transition relative';
+        loopBtn.className = 'p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/30 transition relative';
         loopBtn.title = 'Chế độ lặp: Không lặp lại (Dừng khi phát xong. Bấm để lặp danh sách)';
         loopBtn.setAttribute('aria-label', 'Không lặp lại');
         if (loopBadge) {
           loopBadge.textContent = '—';
-          loopBadge.className = 'absolute -top-1 -right-1 text-[9px] font-mono font-semibold text-zinc-400';
+          loopBadge.className = 'absolute -top-1 -right-1 text-[9px] font-mono font-semibold text-purple-400/40';
         }
       } else {
         // loopMode === 'all'
-        loopBtn.className = 'p-1.5 rounded-md text-purple-700 bg-purple-50 hover:bg-purple-100 transition relative';
+        loopBtn.className = 'p-1.5 rounded-md text-purple-300 hover:text-white bg-purple-950/60 hover:bg-purple-900/60 border border-purple-800/40 transition relative';
         loopBtn.title = 'Chế độ lặp: Toàn bộ danh sách (Bấm để lặp 1 bài)';
         loopBtn.setAttribute('aria-label', 'Lặp toàn bộ danh sách');
         if (loopBadge) {
           loopBadge.textContent = 'A';
-          loopBadge.className = 'absolute -top-1 -right-1 text-[9px] font-mono font-bold text-purple-700';
+          loopBadge.className = 'absolute -top-1 -right-1 text-[9px] font-mono font-bold text-purple-300';
         }
       }
     }
@@ -3170,20 +3170,20 @@ class SymphonyApp {
 
       // Update row active border/background styling
       if (isCurrent) {
-        row.classList.add('bg-purple-50/80', 'border-purple-300', 'shadow-sm');
-        row.classList.remove('bg-white', 'border-purple-100/90');
+        row.classList.add('bg-[#241747]/90', 'border-purple-500/60', 'shadow-lg', 'shadow-purple-950/60');
+        row.classList.remove('bg-[#140F27]/80', 'border-purple-900/30');
       } else {
-        row.classList.remove('bg-purple-50/80', 'border-purple-300');
-        row.classList.add('bg-white', 'border-purple-100/90');
+        row.classList.remove('bg-[#241747]/90', 'border-purple-500/60', 'shadow-lg', 'shadow-purple-950/60');
+        row.classList.add('bg-[#140F27]/80', 'border-purple-900/30');
       }
 
       // Update song title highlight
       const titleEl = row.querySelector('h4');
       if (titleEl) {
         if (isCurrent) {
-          titleEl.classList.add('text-purple-950', 'font-semibold');
+          titleEl.className = 'text-xs sm:text-sm font-semibold truncate text-purple-200';
         } else {
-          titleEl.classList.remove('text-purple-950', 'font-semibold');
+          titleEl.className = 'text-xs sm:text-sm font-medium truncate text-slate-100';
         }
       }
 
@@ -3192,15 +3192,15 @@ class SymphonyApp {
       if (btn && btn.dataset.playingState !== targetState) {
         btn.dataset.playingState = targetState;
         if (targetState === 'playing') {
-          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center flex-shrink-0 transition active:scale-95 shadow-md shadow-purple-600/30 ring-2 ring-purple-300';
+          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white flex items-center justify-center flex-shrink-0 transition active:scale-95 shadow-md shadow-purple-600/50 ring-2 ring-purple-400/50';
           btn.setAttribute('title', 'Tạm dừng');
           btn.innerHTML = '<i data-lucide="pause" class="w-3.5 h-3.5 fill-white"></i>';
         } else if (targetState === 'paused') {
-          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 flex items-center justify-center flex-shrink-0 transition active:scale-95';
+          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-900/70 text-purple-200 hover:bg-purple-800 flex items-center justify-center flex-shrink-0 transition active:scale-95';
           btn.setAttribute('title', 'Tiếp tục phát');
-          btn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 fill-purple-700 ml-0.5"></i>';
+          btn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 fill-purple-300 ml-0.5"></i>';
         } else {
-          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-50 text-purple-700 hover:bg-purple-600 hover:text-white flex items-center justify-center flex-shrink-0 transition active:scale-95';
+          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-[#20183B] text-purple-300 hover:text-white hover:bg-purple-600 flex items-center justify-center flex-shrink-0 transition active:scale-95';
           btn.setAttribute('title', 'Phát bài này');
           btn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 ml-0.5"></i>';
         }
@@ -3216,27 +3216,27 @@ class SymphonyApp {
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = 'pointer-events-auto flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border shadow-lg backdrop-blur-md transition-all duration-300 transform translate-x-full text-xs font-normal';
+    toast.className = 'pointer-events-auto flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border shadow-2xl backdrop-blur-xl transition-all duration-300 transform translate-x-full text-xs font-normal';
 
     let iconName = 'info';
-    let styleClass = 'bg-white border-purple-200 text-zinc-800 shadow-xl';
+    let styleClass = 'bg-[#18132A]/95 border-purple-700/50 text-slate-100';
 
     if (type === 'success') {
       iconName = 'check';
-      styleClass = 'bg-white border-emerald-300 text-emerald-900 shadow-xl';
+      styleClass = 'bg-[#121B2A]/95 border-emerald-500/50 text-emerald-200';
     } else if (type === 'warning') {
       iconName = 'alert-triangle';
-      styleClass = 'bg-white border-amber-300 text-amber-900 shadow-xl';
+      styleClass = 'bg-[#241712]/95 border-amber-500/50 text-amber-200';
     } else if (type === 'error') {
       iconName = 'alert-circle';
-      styleClass = 'bg-white border-red-300 text-red-900 shadow-xl';
+      styleClass = 'bg-[#281119]/95 border-red-500/50 text-red-200';
     }
 
     toast.className += ` ${styleClass}`;
     toast.innerHTML = `
       <i data-lucide="${iconName}" class="w-4 h-4 flex-shrink-0"></i>
       <span class="flex-1 leading-snug">${escapeHTML(message)}</span>
-      <button class="toast-close text-zinc-400 hover:text-zinc-700 p-0.5">
+      <button class="toast-close text-purple-400/60 hover:text-white p-0.5">
         <i data-lucide="x" class="w-3.5 h-3.5"></i>
       </button>
     `;
