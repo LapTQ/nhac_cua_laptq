@@ -2799,9 +2799,6 @@ class SymphonyApp {
     const menu = document.getElementById('song-action-menu');
     if (!menu) return;
 
-    const titleEl = document.getElementById('song-menu-title');
-    if (titleEl) titleEl.textContent = song.title;
-
     const offlineBtn = document.getElementById('song-menu-btn-offline');
     const offlineIcon = document.getElementById('song-menu-offline-icon');
     const offlineText = document.getElementById('song-menu-offline-text');
@@ -2819,7 +2816,7 @@ class SymphonyApp {
         offlineBtn.disabled = false;
         offlineBtn.className = 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-amber-300 hover:text-amber-200 hover:bg-amber-950/40 transition text-left cursor-pointer';
         offlineIcon.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4 text-amber-400"></i>';
-        offlineText.textContent = 'Xoá bản lưu Offline';
+        offlineText.textContent = 'Xoá bản tải về';
       } else {
         offlineBtn.disabled = false;
         offlineBtn.className = 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-200 hover:text-white hover:bg-purple-900/50 transition text-left cursor-pointer';
