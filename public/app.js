@@ -202,6 +202,7 @@ class R2StorageAdapter {
       this.client = new S3Client({
         region: 'auto',
         endpoint: this.config.endpoint,
+        forcePathStyle: true,
         maxAttempts: 1,
         credentials: {
           accessKeyId: this.config.accessKeyId,
@@ -220,7 +221,7 @@ class R2StorageAdapter {
     }
 
     const abortController = new AbortController();
-    const timer = setTimeout(() => abortController.abort(), 6000);
+    const timer = setTimeout(() => abortController.abort(), 10000);
 
     try {
       const command = new GetObjectCommand({
@@ -244,7 +245,10 @@ class R2StorageAdapter {
     } catch (error) {
       clearTimeout(timer);
       if (error.name === 'AbortError' || error.name === 'TimeoutError') {
-        throw new Error('Hết thời gian chờ kết nối R2 (Timeout 6s). Vui lòng kiểm tra lại Endpoint hoặc kết nối mạng.');
+        throw new Error('Hết thời gian chờ kết nối R2 (Timeout 10s). Vui lòng kiểm tra lại Endpoint hoặc kết nối mạng.');
+      }
+      if (error.name === 'TypeError' && (error.message?.includes('Failed to fetch') || error.message?.includes('Load failed'))) {
+        throw new Error('Lỗi CORS hoặc mạng khi tải thư viện R2 (Cần cấu hình AllowedHeaders: ["*"] trên Cloudflare R2).');
       }
       const isNotFound = 
         error.name === 'NoSuchKey' || 
@@ -272,16 +276,18 @@ class R2StorageAdapter {
 
     library.updatedAt = Date.now();
     const payload = JSON.stringify(library, null, 2);
+    // Convert string to Uint8Array for full WebKit/Safari WebCrypto SHA256 compatibility
+    const bodyData = new TextEncoder().encode(payload);
 
     const abortController = new AbortController();
-    const timer = setTimeout(() => abortController.abort(), 8000);
+    const timer = setTimeout(() => abortController.abort(), 15000);
 
     try {
       const command = new PutObjectCommand({
         Bucket: this.config.bucket,
         Key: 'library.json',
-        Body: payload,
-        ContentType: 'application/json'
+        Body: bodyData,
+        ContentType: 'application/json; charset=utf-8'
       });
 
       await this.client.send(command, {
@@ -289,7 +295,10 @@ class R2StorageAdapter {
       });
     } catch (err) {
       if (err.name === 'AbortError' || err.name === 'TimeoutError') {
-        throw new Error('Hết thời gian chờ lưu thư viện lên R2 (Timeout 8s).');
+        throw new Error('Hết thời gian chờ lưu thư viện lên R2 (Timeout 15s).');
+      }
+      if (err.name === 'TypeError' && (err.message?.includes('Load failed') || err.message?.includes('Failed to fetch'))) {
+        throw new Error('Lỗi CORS trên Cloudflare R2 (Yêu cầu thêm AllowedHeaders: ["*"] trong cài đặt CORS của R2).');
       }
       throw err;
     } finally {
@@ -320,6 +329,9 @@ class R2StorageAdapter {
       if (err.name === 'AbortError' || err.name === 'TimeoutError') {
         throw new Error('Hết thời gian tải file âm thanh lên R2 (Timeout).');
       }
+      if (err.name === 'TypeError' && (err.message?.includes('Load failed') || err.message?.includes('Failed to fetch'))) {
+        throw new Error('Lỗi CORS khi tải file lên R2 (Cần AllowedOrigins: ["*"] và AllowedHeaders: ["*"]).');
+      }
       throw err;
     } finally {
       clearTimeout(timer);
@@ -332,7 +344,7 @@ class R2StorageAdapter {
     }
 
     const abortController = new AbortController();
-    const timer = setTimeout(() => abortController.abort(), 8000);
+    const timer = setTimeout(() => abortController.abort(), 15000);
 
     try {
       const command = new DeleteObjectCommand({
@@ -345,7 +357,10 @@ class R2StorageAdapter {
       });
     } catch (err) {
       if (err.name === 'AbortError' || err.name === 'TimeoutError') {
-        throw new Error('Hết thời gian chờ xoá file khỏi R2 (Timeout 8s).');
+        throw new Error('Hết thời gian chờ xoá file khỏi R2 (Timeout 15s).');
+      }
+      if (err.name === 'TypeError' && (err.message?.includes('Load failed') || err.message?.includes('Failed to fetch'))) {
+        throw new Error('Lỗi CORS khi xoá file trên R2 (Yêu cầu thêm AllowedMethods: DELETE và AllowedHeaders: ["*"] trong CORS).');
       }
       throw err;
     } finally {
@@ -404,8 +419,8 @@ class R2StorageAdapter {
       if (e.name === 'AbortError' || e.name === 'TimeoutError' || (e.message && e.message.includes('Timeout'))) {
         throw new Error('Hết thời gian chờ kết nối (Timeout 6s). Kiểm tra lại Endpoint hoặc kết nối mạng.');
       }
-      if (e.name === 'TypeError' && e.message && e.message.includes('Failed to fetch')) {
-        throw new Error('Không thể kết nối tới R2 Endpoint (Kiểm tra lại Endpoint hoặc cấu hình CORS trên Cloudflare R2).');
+      if (e.name === 'TypeError' && (e.message?.includes('Failed to fetch') || e.message?.includes('Load failed'))) {
+        throw new Error('Không thể kết nối tới R2 Endpoint (Kiểm tra lại Endpoint hoặc cấu hình CORS trên Cloudflare R2: cần AllowedHeaders: ["*"]).');
       }
       if (e.$metadata?.httpStatusCode === 403 || e.name === 'AccessDenied') {
         throw new Error('Quyền truy cập bị từ chối (403 AccessDenied). Kiểm tra Access Key ID và Secret Access Key.');

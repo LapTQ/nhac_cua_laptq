@@ -548,11 +548,26 @@
             </div>
           </form>
 
-          <div class="mt-4 p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 leading-relaxed">
-            <strong class="text-zinc-200">Quy tắc CORS trên Cloudflare R2:</strong>
-            <code class="block font-mono bg-zinc-900 p-1.5 rounded mt-1 text-[10px] text-zinc-300 overflow-x-auto">
-              AllowedOrigins: ["*"] | AllowedMethods: ["GET", "PUT", "DELETE", "HEAD"] | AllowedHeaders: ["*"]
-            </code>
+          <!-- Cloudflare R2 CORS Guidance Box -->
+          <div class="mt-4 p-3 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-300 space-y-1.5">
+            <div class="flex items-center gap-1.5 text-zinc-200 font-semibold text-xs">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+              <span>Cấu hình CORS bắt buộc trên Cloudflare R2:</span>
+            </div>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">
+              Để tải và xoá nhạc mượt mà trên cả Điện thoại (iOS/Safari) và Máy tính, bạn cần dán quy tắc CORS sau vào <strong>R2 &rarr; Bucket &rarr; Settings &rarr; CORS Policy</strong>:
+            </p>
+            <pre class="block font-mono bg-zinc-900 p-2 rounded text-[10px] text-emerald-400 overflow-x-auto leading-relaxed">[
+  {
+    "AllowedOrigins": ["*"],
+    "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "ExposeHeaders": ["ETag"]
+  }
+]</pre>
+            <p class="text-[10px] text-amber-300/80 leading-normal">
+              ⚠️ Nếu thiếu <code>AllowedHeaders: ["*"]</code> hoặc <code>DELETE</code>, trình duyệt Safari trên iPhone sẽ báo lỗi <em>Load failed</em>.
+            </p>
           </div>
         </div>
 
