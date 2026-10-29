@@ -3263,14 +3263,8 @@ class SymphonyApp {
         `;
       } else if (isCached) {
         offlineStatusIconHtml = `
-          <span class="inline-flex items-center text-emerald-400 shrink-0" title="Đã tải offline">
-            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
-          </span>
-        `;
-      } else {
-        offlineStatusIconHtml = `
-          <span class="inline-flex items-center text-zinc-500/70 shrink-0" title="Chưa tải offline (Phát từ Cloud)">
-            <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
+          <span class="inline-flex items-center text-emerald-400 shrink-0" title="Đã lưu offline">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
           </span>
         `;
       }
