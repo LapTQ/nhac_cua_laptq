@@ -1503,13 +1503,13 @@ class SymphonyApp {
 
     tabs.forEach(({ id, btn, panel }) => {
       if (id === tab) {
-        btn?.classList.add('border-purple-500', 'text-purple-300', 'font-semibold');
-        btn?.classList.remove('border-transparent', 'text-purple-400/60', 'font-medium');
+        btn?.classList.add('border-purple-500', 'text-white', 'font-semibold');
+        btn?.classList.remove('border-transparent', 'text-zinc-400', 'font-medium');
         panel?.classList.remove('hidden');
         if (panel) panel.style.display = '';
       } else {
-        btn?.classList.add('border-transparent', 'text-purple-400/60', 'font-medium');
-        btn?.classList.remove('border-purple-500', 'text-purple-300', 'font-semibold');
+        btn?.classList.add('border-transparent', 'text-zinc-400', 'font-medium');
+        btn?.classList.remove('border-purple-500', 'text-white', 'font-semibold');
         panel?.classList.add('hidden');
         if (panel) panel.style.display = 'none';
       }
@@ -1601,13 +1601,25 @@ class SymphonyApp {
       }
     });
 
-    // Close on Escape key
+    // Close any open modal on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        const modal = document.getElementById('modal-settings');
-        if (modal && !modal.classList.contains('hidden')) {
-          this.closeSettingsModal();
-        }
+        const modals = [
+          'modal-settings',
+          'modal-upload',
+          'modal-edit-song',
+          'modal-tag-manager',
+          'modal-confirm-delete',
+          'modal-confirm-remove-offline',
+          'modal-ios-install'
+        ];
+        modals.forEach(id => {
+          const m = document.getElementById(id);
+          if (m && !m.classList.contains('hidden')) {
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+          }
+        });
       }
     });
 
@@ -1967,7 +1979,7 @@ class SymphonyApp {
             type="text" 
             value="${escapeHTML(item.title)}" 
             data-index="${idx}"
-            class="staged-file-title-input w-full bg-transparent text-slate-100 font-medium focus:outline-none border-b border-purple-800 focus:border-purple-400 pb-0.5"
+            class="staged-file-title-input w-full bg-transparent text-white font-medium focus:outline-none border-b border-purple-800 focus:border-purple-400 pb-0.5"
             placeholder="Tên bài hát"
           />
           <div class="text-[10px] text-purple-400/60 mt-1 flex items-center gap-1.5 font-mono">
@@ -2100,6 +2112,11 @@ class SymphonyApp {
 
     document.getElementById('btn-close-upload')?.addEventListener('click', () => this.closeUploadModal());
     document.getElementById('btn-cancel-upload')?.addEventListener('click', () => this.closeUploadModal());
+    document.getElementById('modal-upload')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-upload')) {
+        this.closeUploadModal();
+      }
+    });
 
     document.getElementById('form-upload-track')?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -2343,6 +2360,11 @@ class SymphonyApp {
   setupEditModalEvents() {
     document.getElementById('btn-close-edit')?.addEventListener('click', () => this.closeEditSongModal());
     document.getElementById('btn-cancel-edit')?.addEventListener('click', () => this.closeEditSongModal());
+    document.getElementById('modal-edit-song')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-edit-song')) {
+        this.closeEditSongModal();
+      }
+    });
 
     document.getElementById('btn-add-edit-tag')?.addEventListener('click', () => {
       const input = document.getElementById('edit-new-tag-input');
@@ -2419,7 +2441,7 @@ class SymphonyApp {
     container.innerHTML = allTags.map(item => `
       <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-[#181130] border border-purple-800/40 text-xs">
         <div class="flex items-center gap-1.5">
-          <span class="font-medium text-slate-100">${escapeHTML(item.tag)}</span>
+          <span class="font-medium text-white">${escapeHTML(item.tag)}</span>
           <span class="text-[10px] text-purple-400">(${item.count})</span>
         </div>
         <div class="flex items-center gap-1">
@@ -2496,6 +2518,11 @@ class SymphonyApp {
 
   setupTagManagerModalEvents() {
     document.getElementById('btn-close-tag-manager')?.addEventListener('click', () => this.closeTagManagerModal());
+    document.getElementById('modal-tag-manager')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-tag-manager')) {
+        this.closeTagManagerModal();
+      }
+    });
   }
 
   /* ==========================================================================
@@ -2503,15 +2530,23 @@ class SymphonyApp {
      ========================================================================== */
 
   setupConfirmModalsEvents() {
-    document.getElementById('btn-cancel-delete')?.addEventListener('click', () => {
-      document.getElementById('modal-confirm-delete')?.classList.add('hidden');
+    const hideDelete = () => {
+      const m = document.getElementById('modal-confirm-delete');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
       this.songToDelete = null;
+    };
+    document.getElementById('btn-cancel-delete')?.addEventListener('click', hideDelete);
+    document.getElementById('modal-confirm-delete')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-confirm-delete')) hideDelete();
     });
 
     document.getElementById('btn-execute-delete')?.addEventListener('click', async () => {
       if (!this.songToDelete) return;
       const song = this.songToDelete;
-      document.getElementById('modal-confirm-delete')?.classList.add('hidden');
+      hideDelete();
 
       try {
         if (this.storageAdapter.hasConfig() && navigator.onLine && !song.isDemo) {
@@ -2541,15 +2576,23 @@ class SymphonyApp {
       }
     });
 
-    document.getElementById('btn-cancel-remove-offline')?.addEventListener('click', () => {
-      document.getElementById('modal-confirm-remove-offline')?.classList.add('hidden');
+    const hideRemoveOffline = () => {
+      const m = document.getElementById('modal-confirm-remove-offline');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
       this.songToRemoveOffline = null;
+    };
+    document.getElementById('btn-cancel-remove-offline')?.addEventListener('click', hideRemoveOffline);
+    document.getElementById('modal-confirm-remove-offline')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-confirm-remove-offline')) hideRemoveOffline();
     });
 
     document.getElementById('btn-execute-remove-offline')?.addEventListener('click', async () => {
       if (!this.songToRemoveOffline) return;
       const song = this.songToRemoveOffline;
-      document.getElementById('modal-confirm-remove-offline')?.classList.add('hidden');
+      hideRemoveOffline();
 
       try {
         await this.offlineAdapter.deleteAudio(song.id);
@@ -2563,11 +2606,17 @@ class SymphonyApp {
       }
     });
 
-    document.getElementById('btn-close-ios-install')?.addEventListener('click', () => {
-      document.getElementById('modal-ios-install')?.classList.add('hidden');
-    });
-    document.getElementById('btn-confirm-ios-install')?.addEventListener('click', () => {
-      document.getElementById('modal-ios-install')?.classList.add('hidden');
+    const hideIosInstall = () => {
+      const m = document.getElementById('modal-ios-install');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    };
+    document.getElementById('btn-close-ios-install')?.addEventListener('click', hideIosInstall);
+    document.getElementById('btn-confirm-ios-install')?.addEventListener('click', hideIosInstall);
+    document.getElementById('modal-ios-install')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-ios-install')) hideIosInstall();
     });
   }
 
@@ -2818,19 +2867,19 @@ class SymphonyApp {
 
     if (badgeAll) {
       badgeAll.textContent = this.library.songs.length;
-      badgeAll.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-950/80 text-purple-300 border border-purple-800/50' : 'bg-purple-950/90 text-purple-200 border border-purple-700/60'} text-[11px]`;
+      badgeAll.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-950/80 text-purple-300 border border-purple-800/50' : 'bg-purple-950 text-white border border-purple-700/60'} text-[11px]`;
     }
     if (badgeOffline) {
       badgeOffline.textContent = this.cachedSongIds.size;
-      badgeOffline.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-950/90 text-purple-200 border border-purple-700/60' : 'bg-[#241A45] text-purple-300 border border-purple-800/40'} text-[11px]`;
+      badgeOffline.className = `px-1.5 py-0.2 rounded-full ${this.offlineOnly ? 'bg-purple-950 text-white border border-purple-700/60' : 'bg-[#241A45] text-zinc-300 border border-purple-800/40'} text-[11px]`;
     }
 
     if (this.offlineOnly) {
-      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm';
-      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40';
+      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-zinc-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm';
+      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40';
     } else {
-      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40';
-      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm';
+      if (btnAll) btnAll.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40';
+      if (btnOffline) btnOffline.className = 'flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-zinc-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm';
     }
   }
 
@@ -2840,15 +2889,15 @@ class SymphonyApp {
 
     const allTags = this.extractAllTags();
     if (allTags.length === 0) {
-      wrapper.innerHTML = '<span class="text-xs text-purple-400/40">Chưa có tag nào</span>';
+      wrapper.innerHTML = '<span class="text-xs text-zinc-500">Chưa có tag nào</span>';
       return;
     }
 
     wrapper.innerHTML = allTags.map(item => {
       const isSelected = this.selectedTags.has(item.tag);
       const activeClass = isSelected 
-        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-md shadow-purple-900/40' 
-        : 'bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] border border-purple-800/40 transition shadow-sm';
+        ? 'bg-purple-600 text-white font-medium shadow-md shadow-purple-900/40' 
+        : 'bg-[#18132A] text-zinc-300 hover:text-white hover:bg-[#221A3B] border border-purple-800/40 transition shadow-sm';
 
       return `
         <button 
@@ -2936,23 +2985,28 @@ class SymphonyApp {
       }
 
       const activeBgClass = isCurrentSong 
-        ? 'bg-[#241747]/90 border-purple-500/60 shadow-lg shadow-purple-950/60' 
-        : 'bg-[#140F27]/80 hover:bg-[#1C1536] border-purple-900/30 hover:border-purple-700/50 shadow-sm';
+        ? 'bg-purple-950/80 border-2 border-purple-400 shadow-xl shadow-purple-950/80 ring-1 ring-purple-400/40 relative overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-purple-400' 
+        : 'bg-[#130E24] hover:bg-[#1A1333] border border-purple-950/60 shadow-sm';
 
       const initialPlayState = isCurrentlyPlaying ? 'playing' : (isCurrentSong ? 'paused' : 'idle');
-      let playBtnClass = 'bg-[#20183B] text-purple-300 hover:text-white hover:bg-purple-600';
+      let playBtnClass = 'bg-[#20183B] text-zinc-400 hover:text-white hover:bg-purple-600';
       let playBtnTitle = 'Phát bài này';
       let playIconHtml = '<i data-lucide="play" class="w-3.5 h-3.5 ml-0.5"></i>';
 
       if (initialPlayState === 'playing') {
-        playBtnClass = 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md shadow-purple-600/50 ring-2 ring-purple-400/50';
+        playBtnClass = 'bg-purple-600 text-white shadow-lg shadow-purple-600/60 ring-2 ring-purple-400';
         playBtnTitle = 'Tạm dừng';
         playIconHtml = '<i data-lucide="pause" class="w-3.5 h-3.5 fill-white"></i>';
       } else if (initialPlayState === 'paused') {
-        playBtnClass = 'bg-purple-900/70 text-purple-200 hover:bg-purple-800';
+        playBtnClass = 'bg-purple-800 text-white hover:bg-purple-700 ring-1 ring-purple-400';
         playBtnTitle = 'Tiếp tục phát';
-        playIconHtml = '<i data-lucide="play" class="w-3.5 h-3.5 fill-purple-300 ml-0.5"></i>';
+        playIconHtml = '<i data-lucide="play" class="w-3.5 h-3.5 fill-white ml-0.5"></i>';
       }
+
+      const titleColorClass = isCurrentSong ? 'text-white font-bold text-sm' : 'text-zinc-100 font-medium text-xs sm:text-sm';
+      const badgeHtml = isCurrentSong 
+        ? `<span class="active-playing-badge px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase shrink-0 ${isCurrentlyPlaying ? 'bg-purple-500 text-white animate-pulse' : 'bg-purple-800 text-purple-200'}">${isCurrentlyPlaying ? 'Đang phát' : 'Tạm dừng'}</span>`
+        : '';
 
       return `
         <div class="song-row flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border transition ${activeBgClass}" data-song-id="${song.id}">
@@ -2964,15 +3018,16 @@ class SymphonyApp {
             </button>
 
             <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-purple-400/50">${String(index + 1).padStart(2, '0')}</span>
-                <h4 class="text-xs sm:text-sm font-medium truncate ${isCurrentSong ? 'text-purple-200 font-semibold' : 'text-slate-100'}">${escapeHTML(song.title)}</h4>
+              <div class="song-title-wrapper flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-mono text-zinc-500">${String(index + 1).padStart(2, '0')}</span>
+                <h4 class="${titleColorClass} truncate">${escapeHTML(song.title)}</h4>
+                ${badgeHtml}
               </div>
 
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
-                <span class="text-[11px] font-mono text-purple-300/60">${formatDuration(song.duration)}</span>
-                <span class="text-purple-900/80">•</span>
-                <span class="text-[11px] font-mono text-purple-300/60">${formatFileSize(song.size)}</span>
+                <span class="text-[11px] font-mono text-zinc-400">${formatDuration(song.duration)}</span>
+                <span class="text-purple-900">•</span>
+                <span class="text-[11px] font-mono text-zinc-400">${formatFileSize(song.size)}</span>
                 
                 ${(song.tags || []).map(t => `
                   <span class="inline-block px-1.5 py-0.2 rounded text-[10px] bg-purple-950/70 text-purple-300 border border-purple-800/40 font-medium">
@@ -2987,11 +3042,11 @@ class SymphonyApp {
           <div class="flex items-center gap-1 flex-shrink-0">
             ${offlineBtnHtml}
 
-            <button class="btn-edit-song p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Sửa tên và tags">
+            <button class="btn-edit-song p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Sửa tên và tags">
               <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
             </button>
 
-            <button class="btn-delete-song p-1.5 rounded-md text-purple-400/60 hover:text-red-400 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Xoá bài hát">
+            <button class="btn-delete-song p-1.5 rounded-md text-zinc-400 hover:text-red-400 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Xoá bài hát">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
           </div>
@@ -3169,22 +3224,43 @@ class SymphonyApp {
       const targetState = isRowPlaying ? 'playing' : (isCurrent ? 'paused' : 'idle');
 
       // Update row active border/background styling
+      const activeClasses = ['bg-purple-950/80', 'border-2', 'border-purple-400', 'shadow-xl', 'shadow-purple-950/80', 'ring-1', 'ring-purple-400/40', 'relative', 'overflow-hidden', 'before:absolute', 'before:left-0', 'before:top-0', 'before:bottom-0', 'before:w-1.5', 'before:bg-purple-400'];
+      const inactiveClasses = ['bg-[#130E24]', 'hover:bg-[#1A1333]', 'border', 'border-purple-950/60', 'shadow-sm'];
+
       if (isCurrent) {
-        row.classList.add('bg-[#241747]/90', 'border-purple-500/60', 'shadow-lg', 'shadow-purple-950/60');
-        row.classList.remove('bg-[#140F27]/80', 'border-purple-900/30');
+        row.classList.remove('bg-[#130E24]', 'hover:bg-[#1A1333]', 'border', 'border-purple-950/60', 'shadow-sm', 'bg-[#140F27]/80', 'border-purple-900/30', 'bg-[#241747]/90', 'border-purple-500/60');
+        row.classList.add(...activeClasses);
       } else {
+        row.classList.remove(...activeClasses);
         row.classList.remove('bg-[#241747]/90', 'border-purple-500/60', 'shadow-lg', 'shadow-purple-950/60');
-        row.classList.add('bg-[#140F27]/80', 'border-purple-900/30');
+        row.classList.add(...inactiveClasses);
+      }
+
+      // Update active badge
+      let badge = row.querySelector('.active-playing-badge');
+      if (isCurrent) {
+        if (!badge) {
+          badge = document.createElement('span');
+          const titleContainer = row.querySelector('.song-title-wrapper') || row.querySelector('.min-w-0.flex-1 > div');
+          if (titleContainer) titleContainer.appendChild(badge);
+        }
+        if (isRowPlaying) {
+          badge.className = 'active-playing-badge px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500 text-white tracking-wider uppercase animate-pulse shrink-0';
+          badge.textContent = 'Đang phát';
+        } else {
+          badge.className = 'active-playing-badge px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-800 text-purple-200 tracking-wider uppercase shrink-0';
+          badge.textContent = 'Tạm dừng';
+        }
+      } else if (badge) {
+        badge.remove();
       }
 
       // Update song title highlight
       const titleEl = row.querySelector('h4');
       if (titleEl) {
-        if (isCurrent) {
-          titleEl.className = 'text-xs sm:text-sm font-semibold truncate text-purple-200';
-        } else {
-          titleEl.className = 'text-xs sm:text-sm font-medium truncate text-slate-100';
-        }
+        titleEl.className = isCurrent 
+          ? 'text-xs sm:text-sm font-bold truncate text-white' 
+          : 'text-xs sm:text-sm font-medium truncate text-zinc-100';
       }
 
       // Update play button state and icon
@@ -3192,15 +3268,15 @@ class SymphonyApp {
       if (btn && btn.dataset.playingState !== targetState) {
         btn.dataset.playingState = targetState;
         if (targetState === 'playing') {
-          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white flex items-center justify-center flex-shrink-0 transition active:scale-95 shadow-md shadow-purple-600/50 ring-2 ring-purple-400/50';
+          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center flex-shrink-0 transition active:scale-95 shadow-lg shadow-purple-600/60 ring-2 ring-purple-400';
           btn.setAttribute('title', 'Tạm dừng');
           btn.innerHTML = '<i data-lucide="pause" class="w-3.5 h-3.5 fill-white"></i>';
         } else if (targetState === 'paused') {
-          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-900/70 text-purple-200 hover:bg-purple-800 flex items-center justify-center flex-shrink-0 transition active:scale-95';
+          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-purple-800 text-white hover:bg-purple-700 ring-1 ring-purple-400 flex items-center justify-center flex-shrink-0 transition active:scale-95';
           btn.setAttribute('title', 'Tiếp tục phát');
-          btn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 fill-purple-300 ml-0.5"></i>';
+          btn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 fill-white ml-0.5"></i>';
         } else {
-          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-[#20183B] text-purple-300 hover:text-white hover:bg-purple-600 flex items-center justify-center flex-shrink-0 transition active:scale-95';
+          btn.className = 'btn-play-song w-8 h-8 rounded-full bg-[#20183B] text-zinc-400 hover:text-white hover:bg-purple-600 flex items-center justify-center flex-shrink-0 transition active:scale-95';
           btn.setAttribute('title', 'Phát bài này');
           btn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 ml-0.5"></i>';
         }
@@ -3219,7 +3295,7 @@ class SymphonyApp {
     toast.className = 'pointer-events-auto flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border shadow-2xl backdrop-blur-xl transition-all duration-300 transform translate-x-full text-xs font-normal';
 
     let iconName = 'info';
-    let styleClass = 'bg-[#18132A]/95 border-purple-700/50 text-slate-100';
+    let styleClass = 'bg-[#18132A]/95 border-purple-700/50 text-white';
 
     if (type === 'success') {
       iconName = 'check';

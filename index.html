@@ -110,7 +110,7 @@
       }
     </style>
   </head>
-  <body class="h-screen h-[100dvh] flex flex-col font-sans selection:bg-purple-600/40 selection:text-white overflow-hidden bg-[#0B0813] text-slate-100">
+  <body class="h-screen h-[100dvh] flex flex-col font-sans selection:bg-purple-600/40 selection:text-white overflow-hidden bg-[#0B0813] text-white">
 
     <!-- Clean Minimalist Header (Fixed Top) -->
     <header class="flex-shrink-0 border-b border-purple-900/40 bg-[#0B0813]/85 backdrop-blur-xl px-4 sm:px-6 py-2.5 z-30 shadow-lg shadow-purple-950/20">
@@ -119,45 +119,37 @@
         <!-- Clean Action Buttons -->
         <div class="flex items-center justify-end gap-2 w-full flex-wrap">
           <!-- Download All Filtered to Offline Button -->
-          <button id="btn-download-filtered" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-purple-200 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Tải toàn bộ danh sách đang hiển thị về nghe offline">
+          <button id="btn-download-filtered" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-zinc-300 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Tải toàn bộ danh sách đang hiển thị về nghe offline">
             <i data-lucide="arrow-down-to-line" class="w-3.5 h-3.5 text-purple-400"></i>
             <span class="hidden sm:inline">Tải Offline</span>
           </button>
 
           <!-- Manage Tags Button -->
-          <button id="btn-open-tag-manager" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-purple-200 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Quản lý thẻ tags">
+          <button id="btn-open-tag-manager" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-zinc-300 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Quản lý thẻ tags">
             <i data-lucide="tag" class="w-3.5 h-3.5 text-purple-400"></i>
             <span class="hidden sm:inline">Tags</span>
           </button>
 
           <!-- Sync Button -->
-          <button id="btn-sync" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-purple-200 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Làm mới từ R2">
+          <button id="btn-sync" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-zinc-300 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Làm mới từ R2">
             <i id="sync-icon" data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-400"></i>
             <span class="hidden sm:inline">Làm mới</span>
           </button>
 
           <!-- Upload Track Button -->
-          <button id="btn-open-upload" class="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-semibold transition shadow-md shadow-purple-600/30" title="Tải nhạc lên Cloudflare R2">
+          <button id="btn-open-upload" class="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs sm:text-sm font-semibold transition shadow-md shadow-purple-600/30" title="Tải nhạc lên Cloudflare R2">
             <i data-lucide="plus" class="w-4 h-4 text-white"></i>
             <span>Tải nhạc</span>
           </button>
 
           <!-- Settings Button -->
-          <button id="btn-open-settings" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-purple-200 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Cài đặt kết nối R2">
+          <button id="btn-open-settings" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-zinc-300 hover:text-white text-xs sm:text-sm font-medium border border-purple-800/40 transition shadow-sm" title="Cài đặt kết nối R2">
             <i data-lucide="settings" class="w-3.5 h-3.5 text-purple-400"></i>
             <span class="hidden md:inline">Cài đặt</span>
           </button>
 
           <!-- PWA Install Button -->
-          <button id="btn-install-pwa" class="hidden items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-purple-200 text-xs sm:text-sm font-medium border border-purple-700/50 transition shadow-sm">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">Cài đặt App</span>
-          </button>
-        </div>
-
-      </div>
-    </header>
-          <button id="btn-install-pwa" class="hidden items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-xs sm:text-sm font-medium border border-blue-500/30 transition">
+          <button id="btn-install-pwa" class="hidden items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-white text-xs sm:text-sm font-medium border border-purple-700/50 transition shadow-sm">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Cài đặt App</span>
           </button>
@@ -181,9 +173,9 @@
               id="search-input" 
               type="text" 
               placeholder="Tìm kiếm bài hát, tên file hoặc tag..." 
-              class="w-full pl-9 pr-8 py-2 rounded-lg bg-[#18132A]/90 border border-purple-800/40 text-sm text-slate-100 placeholder-purple-300/40 focus:outline-none focus:border-purple-400 focus:bg-[#1E1738] shadow-sm transition"
+              class="w-full pl-9 pr-8 py-2 rounded-lg bg-[#18132A]/90 border border-purple-800/40 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:bg-[#1E1738] shadow-sm transition"
             />
-            <button id="search-clear" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-purple-400/60 hover:text-purple-200" title="Xoá tìm kiếm">
+            <button id="search-clear" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white" title="Xoá tìm kiếm">
               <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
           </div>
@@ -191,22 +183,22 @@
           <!-- Quick Filter Buttons -->
           <div class="flex items-center gap-2">
             <!-- All Filter -->
-            <button id="filter-all" class="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40">
+            <button id="filter-all" class="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 text-white font-medium text-xs transition shadow-md shadow-purple-900/40">
               <span>Tất cả</span>
-              <span id="badge-all-count" class="px-1.5 py-0.2 rounded-full bg-purple-950/90 text-purple-200 border border-purple-700/60 text-[11px]">0</span>
+              <span id="badge-all-count" class="px-1.5 py-0.2 rounded-full bg-purple-950 text-white border border-purple-700/60 text-[11px]">0</span>
             </button>
 
             <!-- Offline Filter -->
-            <button id="filter-offline" class="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm">
+            <button id="filter-offline" class="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#18132A] text-zinc-300 hover:text-white hover:bg-[#221A3B] font-medium text-xs border border-purple-800/40 transition shadow-sm">
               <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-purple-400"></i>
               <span>Offline</span>
-              <span id="badge-offline-count" class="px-1.5 py-0.2 rounded-full bg-[#241A45] text-[11px] text-purple-300 border border-purple-800/40">0</span>
+              <span id="badge-offline-count" class="px-1.5 py-0.2 rounded-full bg-[#241A45] text-[11px] text-zinc-300 border border-purple-800/40">0</span>
             </button>
 
             <!-- Tag Mode Toggle -->
-            <button id="btn-tag-mode-toggle" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#18132A] text-purple-300 hover:text-white hover:bg-[#221A3B] text-xs border border-purple-800/40 transition shadow-sm" title="Chuyển chế độ lọc Tags: Bất kỳ (HOẶC) / Tất cả (VÀ)">
-              <span class="text-[11px] text-purple-400/60">Khớp:</span>
-              <span id="tag-mode-text" class="font-medium text-purple-300">HOẶC</span>
+            <button id="btn-tag-mode-toggle" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#18132A] text-zinc-300 hover:text-white hover:bg-[#221A3B] text-xs border border-purple-800/40 transition shadow-sm" title="Chuyển chế độ lọc Tags: Bất kỳ (HOẶC) / Tất cả (VÀ)">
+              <span class="text-[11px] text-zinc-400">Khớp:</span>
+              <span id="tag-mode-text" class="font-medium text-white">HOẶC</span>
             </button>
           </div>
 
@@ -226,19 +218,19 @@
       <section class="flex-1 min-h-0 flex flex-col gap-1.5 overflow-hidden">
         
         <!-- Header row (Fixed above the list) -->
-        <div class="flex-shrink-0 flex items-center justify-between px-1 py-0.5 text-xs text-purple-300/60">
+        <div class="flex-shrink-0 flex items-center justify-between px-1 py-0.5 text-xs text-zinc-400">
           <div class="flex items-center gap-1.5">
-            <span class="font-medium text-purple-200">Danh Sách Bài Hát</span>
-            <span id="filtered-songs-count" class="text-purple-400 font-medium">(0 bài)</span>
+            <span class="font-medium text-white">Danh Sách Bài Hát</span>
+            <span id="filtered-songs-count" class="text-zinc-400 font-medium">(0 bài)</span>
           </div>
-          <span class="hidden sm:inline text-purple-400/50">Tự động ưu tiên bản lưu Offline nếu có</span>
+          <span class="hidden sm:inline text-zinc-400">Tự động ưu tiên bản lưu Offline nếu có</span>
         </div>
 
         <!-- Scrollable songs viewport -->
         <div id="songs-scroll-viewport" class="flex-1 min-h-0 overflow-y-auto space-y-1.5 pr-1 overscroll-contain focus:outline-none">
           <!-- Songs Container -->
           <div id="songs-list-container" class="space-y-1.5 pb-4">
-            <div id="songs-loading-state" class="py-12 text-center text-purple-400/60 text-sm">
+            <div id="songs-loading-state" class="py-12 text-center text-zinc-400 text-sm">
               <i data-lucide="loader-2" class="w-5 h-5 mx-auto text-purple-400 animate-spin mb-2"></i>
               Đang tải danh sách bài hát...
             </div>
@@ -250,17 +242,17 @@
               <i data-lucide="music-2" class="w-6 h-6"></i>
             </div>
             <h3 id="empty-title" class="text-sm sm:text-base font-semibold text-white mb-1">Chưa có bài hát nào</h3>
-            <p id="empty-desc" class="text-xs text-purple-300/60 max-w-sm mx-auto mb-5">
+            <p id="empty-desc" class="text-xs text-zinc-400 max-w-sm mx-auto mb-5">
               Kết nối tới Cloudflare R2 để tải nhạc hoặc nghe thử các bài hát mẫu.
             </p>
             <div class="flex items-center justify-center gap-2.5 flex-wrap">
-              <button id="btn-empty-demo" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-medium transition flex items-center gap-1.5 shadow-md shadow-purple-900/40">
+              <button id="btn-empty-demo" class="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition flex items-center gap-1.5 shadow-md shadow-purple-900/40">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Nghe thử Demo (3 bài)
               </button>
-              <button id="btn-empty-upload" class="px-3.5 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-purple-200 hover:text-white text-xs font-medium border border-purple-800/40 transition flex items-center gap-1.5 shadow-sm">
+              <button id="btn-empty-upload" class="px-3.5 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-zinc-300 hover:text-white text-xs font-medium border border-purple-800/40 transition flex items-center gap-1.5 shadow-sm">
                 <i data-lucide="plus" class="w-3.5 h-3.5 text-purple-400"></i> Tải nhạc lên
               </button>
-              <button id="btn-empty-settings" class="px-3.5 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-purple-200 hover:text-white text-xs font-medium border border-purple-800/40 transition flex items-center gap-1.5 shadow-sm">
+              <button id="btn-empty-settings" class="px-3.5 py-1.5 rounded-lg bg-[#18132A] hover:bg-[#221A3B] text-zinc-300 hover:text-white text-xs font-medium border border-purple-800/40 transition flex items-center gap-1.5 shadow-sm">
                 <i data-lucide="settings" class="w-3.5 h-3.5 text-purple-400"></i> Cài đặt R2
               </button>
             </div>
@@ -277,7 +269,7 @@
 
         <!-- Progress Seek Slider & Time -->
         <div class="flex items-center gap-3">
-          <span id="player-current-time" class="text-[11px] font-mono text-purple-300 font-semibold w-9 text-right">00:00</span>
+          <span id="player-current-time" class="text-[11px] font-mono text-white font-semibold w-9 text-right">00:00</span>
           
           <div class="relative flex-1 flex items-center">
             <input 
@@ -292,7 +284,7 @@
             />
           </div>
 
-          <span id="player-total-duration" class="text-[11px] font-mono text-purple-400/50 w-9">00:00</span>
+          <span id="player-total-duration" class="text-[11px] font-mono text-zinc-400 w-9">00:00</span>
         </div>
 
         <!-- Controls & Track Info -->
@@ -302,7 +294,7 @@
           <div class="flex items-center min-w-0 flex-1 sm:max-w-xs">
             <div class="min-w-0 flex-1">
               <div id="player-track-title" class="text-xs sm:text-sm font-semibold text-white truncate">Chưa chọn bài hát</div>
-              <div class="flex items-center gap-1.5 text-[10px] text-purple-300/60 font-mono mt-0.5">
+              <div class="flex items-center gap-1.5 text-[10px] text-zinc-400 font-mono mt-0.5">
                 <span id="player-source-indicator" class="px-1.5 py-0.2 rounded bg-purple-950/80 text-purple-300 border border-purple-800/50 font-medium">CHỜ PHÁT</span>
               </div>
             </div>
@@ -311,27 +303,27 @@
           <!-- Center: Transport Buttons -->
           <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <!-- Shuffle -->
-            <button id="btn-player-shuffle" class="p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/30 transition" title="Bật phát ngẫu nhiên (Đang tắt)" aria-pressed="false">
+            <button id="btn-player-shuffle" class="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-purple-900/30 transition" title="Bật phát ngẫu nhiên (Đang tắt)" aria-pressed="false">
               <i data-lucide="shuffle" class="w-4 h-4"></i>
             </button>
 
             <!-- Previous -->
-            <button id="btn-player-prev" class="p-1.5 rounded-md text-purple-300 hover:text-white hover:bg-purple-900/30 transition" title="Bài trước">
+            <button id="btn-player-prev" class="p-1.5 rounded-md text-zinc-300 hover:text-white hover:bg-purple-900/30 transition" title="Bài trước">
               <i data-lucide="skip-back" class="w-4 h-4 sm:w-5 sm:h-5"></i>
             </button>
 
             <!-- Play / Pause -->
-            <button id="btn-player-play-pause" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 text-white flex items-center justify-center shadow-lg shadow-purple-600/50 transition active:scale-95" title="Phát" aria-label="Phát" data-playing-state="paused">
+            <button id="btn-player-play-pause" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-lg shadow-purple-600/50 transition active:scale-95" title="Phát" aria-label="Phát" data-playing-state="paused">
               <i id="player-play-icon" data-lucide="play" class="w-4 h-4 sm:w-5 sm:h-5 fill-white ml-0.5"></i>
             </button>
 
             <!-- Next -->
-            <button id="btn-player-next" class="p-1.5 rounded-md text-purple-300 hover:text-white hover:bg-purple-900/30 transition" title="Bài tiếp theo">
+            <button id="btn-player-next" class="p-1.5 rounded-md text-zinc-300 hover:text-white hover:bg-purple-900/30 transition" title="Bài tiếp theo">
               <i data-lucide="skip-forward" class="w-4 h-4 sm:w-5 sm:h-5"></i>
             </button>
 
             <!-- Loop Mode (All / One / None) -->
-            <button id="btn-player-loop" class="p-1.5 rounded-md text-purple-300 hover:text-white bg-purple-950/60 hover:bg-purple-900/60 border border-purple-800/40 transition relative" title="Chế độ lặp: Toàn bộ danh sách (Bấm để lặp 1 bài)" aria-label="Lặp lại toàn bộ danh sách">
+            <button id="btn-player-loop" class="p-1.5 rounded-md text-zinc-300 hover:text-white bg-purple-950/60 hover:bg-purple-900/60 border border-purple-800/40 transition relative" title="Chế độ lặp: Toàn bộ danh sách (Bấm để lặp 1 bài)" aria-label="Lặp lại toàn bộ danh sách">
               <i id="player-loop-icon" data-lucide="repeat" class="w-4 h-4"></i>
               <span id="player-loop-badge" class="absolute -top-1 -right-1 text-[9px] font-mono font-bold text-purple-300">A</span>
             </button>
@@ -339,7 +331,7 @@
 
           <!-- Right: Volume Fader & Mute -->
           <div class="hidden sm:flex items-center gap-2 flex-1 justify-end max-w-xs">
-            <button id="btn-player-mute" class="text-purple-400 hover:text-purple-200" title="Bật/Tắt tiếng">
+            <button id="btn-player-mute" class="text-zinc-400 hover:text-white" title="Bật/Tắt tiếng">
               <i id="volume-icon" data-lucide="volume-2" class="w-4 h-4"></i>
             </button>
             <input 
@@ -352,7 +344,7 @@
               class="w-20 lg:w-24 cursor-pointer h-1 accent-purple-400"
               title="Âm lượng"
             />
-            <span id="volume-level-text" class="text-[10px] font-mono text-purple-400/60 w-6">85%</span>
+            <span id="volume-level-text" class="text-[10px] font-mono text-zinc-400 w-6">85%</span>
           </div>
 
         </div>
@@ -366,15 +358,15 @@
     <!-- ================= MODALS ================= -->
 
     <!-- 1. Settings Modal: 3 Tabs (Đồng Bộ 1-Chạm, Cloudflare R2 & RapidAPI youtube-mp36) -->
-    <div id="modal-settings" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="w-full max-w-md rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 sm:p-6 my-8 text-slate-100">
+    <div id="modal-settings" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-md rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 sm:p-6 my-auto mx-auto relative text-white">
         
-        <div class="flex items-center justify-between pb-3 border-b border-purple-900/40">
+        <div class="sticky top-0 bg-[#140F27] z-20 flex items-center justify-between pb-3 border-b border-purple-900/40 -mx-5 -mt-5 px-5 pt-5 sm:-mx-6 sm:-mt-6 sm:px-6 sm:pt-6 rounded-t-2xl">
           <div>
             <h2 class="text-base font-semibold text-white">Cài Đặt Hệ Thống</h2>
-            <p class="text-xs text-purple-300/60">Đồng Bộ, Cloudflare R2 & RapidAPI</p>
+            <p class="text-xs text-zinc-400">Đồng Bộ, Cloudflare R2 & RapidAPI</p>
           </div>
-          <button id="btn-close-settings" class="p-1 rounded-md text-purple-400 hover:text-white hover:bg-purple-900/30 transition">
+          <button id="btn-close-settings" class="p-1.5 rounded-lg text-zinc-400 hover:text-white bg-purple-950/60 hover:bg-purple-900/80 border border-purple-800/40 transition" title="Đóng">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
@@ -384,7 +376,7 @@
           <button 
             type="button" 
             id="tab-btn-sync" 
-            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-semibold border-b-2 border-purple-500 text-purple-300 flex items-center justify-center gap-1 sm:gap-1.5 transition"
+            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-semibold border-b-2 border-purple-500 text-white flex items-center justify-center gap-1 sm:gap-1.5 transition"
           >
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-400 shrink-0"></i>
             <span>Đồng Bộ 1-Chạm</span>
@@ -392,7 +384,7 @@
           <button 
             type="button" 
             id="tab-btn-r2" 
-            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-medium border-b-2 border-transparent text-purple-400/60 hover:text-purple-200 flex items-center justify-center gap-1 sm:gap-1.5 transition"
+            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-white flex items-center justify-center gap-1 sm:gap-1.5 transition"
           >
             <i data-lucide="cloud" class="w-3.5 h-3.5 shrink-0"></i>
             <span>Cloudflare R2</span>
@@ -400,7 +392,7 @@
           <button 
             type="button" 
             id="tab-btn-rapidapi" 
-            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-medium border-b-2 border-transparent text-purple-400/60 hover:text-purple-200 flex items-center justify-center gap-1 sm:gap-1.5 transition"
+            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-white flex items-center justify-center gap-1 sm:gap-1.5 transition"
           >
             <i data-lucide="youtube" class="w-3.5 h-3.5 text-red-400 shrink-0"></i>
             <span>RapidAPI YouTube</span>
@@ -409,12 +401,12 @@
 
         <!-- Tab 1 Panel: Đồng Bộ 1-Chạm -->
         <div id="tab-panel-sync" class="space-y-4 pt-4">
-          <div class="p-3 rounded-lg bg-[#1D1438]/80 border border-purple-800/40 text-xs text-purple-200 leading-relaxed">
-            <div class="flex items-center gap-1.5 text-purple-300 font-semibold mb-1">
+          <div class="p-3 rounded-lg bg-[#1D1438]/80 border border-purple-800/40 text-xs text-zinc-300 leading-relaxed">
+            <div class="flex items-center gap-1.5 text-white font-semibold mb-1">
               <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-400"></i>
               <span>Chuyển cấu hình giữa Laptop & Điện thoại</span>
             </div>
-            <p class="text-[11px] text-purple-300/70">
+            <p class="text-[11px] text-zinc-400">
               Sao chép mã cấu hình từ thiết bị này để dán vào thiết bị khác (bao gồm cả Cloudflare R2 và RapidAPI) chỉ trong 1 thao tác.
             </p>
           </div>
@@ -422,10 +414,10 @@
           <!-- Section 1: Xuất cấu hình -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <label class="block text-xs font-medium text-purple-200" for="export-base64-input">
+              <label class="block text-xs font-medium text-white" for="export-base64-input">
                 1. Mã cấu hình thiết bị này (Export)
               </label>
-              <span class="text-[10px] text-purple-400/60">Gồm R2 & RapidAPI</span>
+              <span class="text-[10px] text-zinc-400">Gồm R2 & RapidAPI</span>
             </div>
             <div class="flex items-center gap-2">
               <input 
@@ -433,25 +425,25 @@
                 type="text" 
                 readonly 
                 placeholder="Chưa có cấu hình để xuất" 
-                class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-purple-300 font-mono select-all focus:outline-none"
+                class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-white font-mono select-all focus:outline-none"
               />
               <button 
                 id="btn-copy-export" 
                 type="button"
-                class="px-2.5 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-purple-200 text-xs font-medium border border-purple-700/50 transition flex items-center gap-1 shrink-0"
+                class="px-2.5 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-white text-xs font-medium border border-purple-700/50 transition flex items-center gap-1 shrink-0"
               >
                 <i data-lucide="copy" class="w-3 h-3"></i>
                 <span>Sao chép</span>
               </button>
             </div>
-            <p class="text-[11px] text-purple-400/60">
+            <p class="text-[11px] text-zinc-400">
               Bấm <strong>Sao chép</strong> rồi gửi mã này qua Zalo/Tin nhắn đến điện thoại hoặc laptop mới của bạn.
             </p>
           </div>
 
           <!-- Section 2: Nhập cấu hình -->
           <div class="space-y-2 pt-3 border-t border-purple-900/40">
-            <label class="block text-xs font-medium text-purple-200" for="import-base64-input">
+            <label class="block text-xs font-medium text-white" for="import-base64-input">
               2. Dán mã từ thiết bị khác (Import)
             </label>
             <div class="flex items-center gap-2">
@@ -459,7 +451,7 @@
                 id="import-base64-input" 
                 type="text" 
                 placeholder="Dán mã Base64 vào đây..." 
-                class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
               <button 
                 id="btn-apply-import" 
@@ -470,7 +462,7 @@
                 <span>Dán & Lưu</span>
               </button>
             </div>
-            <p class="text-[11px] text-purple-400/60">
+            <p class="text-[11px] text-zinc-400">
               Dán mã nhận được từ thiết bị đã cài đặt và nhấn <strong>Dán & Lưu</strong> để đồng bộ tức thì.
             </p>
           </div>
@@ -481,7 +473,7 @@
           <form id="form-r2-settings" class="space-y-3.5">
             <!-- R2 Endpoint -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="r2-endpoint">
+              <label class="block text-xs font-medium text-white mb-1" for="r2-endpoint">
                 S3 Endpoint URL <span class="text-red-400">*</span>
               </label>
               <input 
@@ -489,13 +481,13 @@
                 type="url" 
                 required
                 placeholder="https://<ACCOUNT_ID>.r2.cloudflarestorage.com"
-                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
             </div>
 
             <!-- Bucket Name -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="r2-bucket">
+              <label class="block text-xs font-medium text-white mb-1" for="r2-bucket">
                 Bucket Name <span class="text-red-400">*</span>
               </label>
               <input 
@@ -503,13 +495,13 @@
                 type="text" 
                 required
                 placeholder="my-music-bucket"
-                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
             </div>
 
             <!-- Access Key ID -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="r2-access-key">
+              <label class="block text-xs font-medium text-white mb-1" for="r2-access-key">
                 Access Key ID <span class="text-red-400">*</span>
               </label>
               <input 
@@ -517,13 +509,13 @@
                 type="text" 
                 required
                 placeholder="API Access Key"
-                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
             </div>
 
             <!-- Secret Access Key -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="r2-secret-key">
+              <label class="block text-xs font-medium text-white mb-1" for="r2-secret-key">
                 Secret Access Key <span class="text-red-400">*</span>
               </label>
               <input 
@@ -531,7 +523,7 @@
                 type="password" 
                 required
                 placeholder="API Secret Key"
-                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
             </div>
 
@@ -540,7 +532,7 @@
               <button 
                 type="button" 
                 id="btn-test-r2"
-                class="flex-1 py-2 px-3 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 border border-purple-800/40 text-xs font-medium transition flex items-center justify-center gap-1.5 shadow-sm"
+                class="flex-1 py-2 px-3 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white border border-purple-800/40 text-xs font-medium transition flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
                 <span>Kiểm tra kết nối</span>
@@ -549,7 +541,7 @@
               <button 
                 type="submit" 
                 id="btn-save-r2"
-                class="flex-1 py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-900/50"
+                class="flex-1 py-2 px-3 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-900/50"
               >
                 <i data-lucide="save" class="w-3.5 h-3.5"></i>
                 <span>Lưu Cài Đặt R2</span>
@@ -558,12 +550,12 @@
           </form>
 
           <!-- Cloudflare R2 CORS Guidance Box -->
-          <div class="mt-4 p-3 rounded-lg bg-[#181130] border border-purple-800/40 text-[11px] text-purple-200 space-y-1.5">
-            <div class="flex items-center gap-1.5 text-purple-300 font-semibold text-xs">
+          <div class="mt-4 p-3 rounded-lg bg-[#181130] border border-purple-800/40 text-[11px] text-zinc-300 space-y-1.5">
+            <div class="flex items-center gap-1.5 text-white font-semibold text-xs">
               <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
               <span>Cấu hình CORS bắt buộc trên Cloudflare R2:</span>
             </div>
-            <p class="text-[11px] text-purple-300/70 leading-relaxed">
+            <p class="text-[11px] text-zinc-400 leading-relaxed">
               Để tải và xoá nhạc mượt mà trên cả Điện thoại (iOS/Safari) và Máy tính, bạn cần dán quy tắc CORS sau vào <strong>R2 &rarr; Bucket &rarr; Settings &rarr; CORS Policy</strong>:
             </p>
             <pre class="block font-mono bg-[#0B0813] border border-purple-900/60 p-2 rounded text-[10px] text-emerald-400 overflow-x-auto leading-relaxed">[
@@ -585,7 +577,7 @@
           <form id="form-rapidapi-settings" class="space-y-3.5">
             <!-- RapidAPI Key -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="rapidapi-key">
+              <label class="block text-xs font-medium text-white mb-1" for="rapidapi-key">
                 RapidAPI Key (<code class="text-[11px] text-purple-300 font-mono bg-purple-950 px-1 py-0.5 rounded border border-purple-800/40">x-rapidapi-key</code>) <span class="text-red-400">*</span>
               </label>
               <input 
@@ -593,20 +585,20 @@
                 type="password" 
                 required
                 placeholder="Ví dụ: 8a4b2c1d9e... (Lấy từ RapidAPI)"
-                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
             </div>
 
             <!-- RapidAPI Host -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="rapidapi-host">
+              <label class="block text-xs font-medium text-white mb-1" for="rapidapi-host">
                 RapidAPI Host (<code class="text-[11px] text-purple-300 font-mono bg-purple-950 px-1 py-0.5 rounded border border-purple-800/40">x-rapidapi-host</code>)
               </label>
               <input 
                 id="rapidapi-host" 
                 type="text" 
                 value="youtube-mp36.p.rapidapi.com"
-                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-mono focus:outline-none focus:border-purple-400"
+                class="w-full px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-purple-400"
               />
             </div>
 
@@ -615,7 +607,7 @@
               <button 
                 type="button" 
                 id="btn-test-rapidapi"
-                class="flex-1 py-2 px-3 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 border border-purple-800/40 text-xs font-medium transition flex items-center justify-center gap-1.5 shadow-sm"
+                class="flex-1 py-2 px-3 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white border border-purple-800/40 text-xs font-medium transition flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
                 <span>Kiểm tra kết nối</span>
@@ -624,7 +616,7 @@
               <button 
                 type="submit" 
                 id="btn-save-rapidapi"
-                class="flex-1 py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-900/50"
+                class="flex-1 py-2 px-3 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-900/50"
               >
                 <i data-lucide="save" class="w-3.5 h-3.5"></i>
                 <span>Lưu RapidAPI</span>
@@ -634,11 +626,11 @@
 
           <!-- Guide / How to get key -->
           <div class="p-3 rounded-lg bg-[#181130] border border-purple-800/40 text-xs space-y-2">
-            <div class="flex items-center gap-1.5 text-purple-300 font-semibold">
+            <div class="flex items-center gap-1.5 text-white font-semibold">
               <i data-lucide="info" class="w-3.5 h-3.5 text-purple-400"></i>
               <span>Cách lấy RapidAPI Key cho youtube-mp36:</span>
             </div>
-            <ol class="list-decimal list-inside space-y-1 text-[11px] text-purple-300/70 leading-relaxed pl-1">
+            <ol class="list-decimal list-inside space-y-1 text-[11px] text-zinc-400 leading-relaxed pl-1">
               <li>Mở trang <a href="https://rapidapi.com/ytjar/api/youtube-mp36" target="_blank" rel="noopener noreferrer" class="text-purple-400 font-medium hover:underline">RapidAPI youtube-mp36</a>.</li>
               <li>Đăng ký tài khoản miễn phí và chọn gói <strong>Basic (Free)</strong>.</li>
               <li>Sao chép mã trong ô <code class="text-purple-300 font-mono bg-purple-950 px-1 py-0.5 rounded border border-purple-800/40">X-RapidAPI-Key</code> rồi dán vào ô bên trên.</li>
@@ -650,15 +642,15 @@
     </div>
 
     <!-- 2. Upload Track Modal (Local File or YouTube via RapidAPI) -->
-    <div id="modal-upload" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="w-full max-w-md rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 sm:p-6 my-8 text-slate-100">
+    <div id="modal-upload" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-md rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 sm:p-6 my-auto mx-auto relative text-white">
         
-        <div class="flex items-center justify-between pb-3 border-b border-purple-900/40">
+        <div class="sticky top-0 bg-[#140F27] z-20 flex items-center justify-between pb-3 border-b border-purple-900/40 -mx-5 -mt-5 px-5 pt-5 sm:-mx-6 sm:-mt-6 sm:px-6 sm:pt-6 rounded-t-2xl">
           <div>
             <h2 class="text-base font-semibold text-white">Tải Nhạc Lên R2</h2>
-            <p class="text-xs text-purple-300/60">Từ file trong máy hoặc link YouTube (youtube-mp36)</p>
+            <p class="text-xs text-zinc-400">Từ file trong máy hoặc link YouTube (youtube-mp36)</p>
           </div>
-          <button id="btn-close-upload" class="p-1 rounded-md text-purple-400 hover:text-white hover:bg-purple-900/30 transition">
+          <button id="btn-close-upload" class="p-1.5 rounded-lg text-zinc-400 hover:text-white bg-purple-950/60 hover:bg-purple-900/80 border border-purple-800/40 transition" title="Đóng">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
@@ -667,13 +659,13 @@
 
           <!-- Dropdown Source Selector -->
           <div>
-            <label class="block text-xs font-medium text-purple-200 mb-1" for="upload-source-select">
+            <label class="block text-xs font-medium text-white mb-1" for="upload-source-select">
               Phương thức tải nhạc
             </label>
             <div class="relative">
               <select 
                 id="upload-source-select" 
-                class="w-full appearance-none px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 font-medium focus:outline-none focus:border-purple-400 cursor-pointer pr-8"
+                class="w-full appearance-none px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white font-medium focus:outline-none focus:border-purple-400 cursor-pointer pr-8"
               >
                 <option value="local">📁 Tải từ file trên máy (MP3, M4A, FLAC, WAV, OGG)</option>
                 <option value="youtube">📺 Tải từ link YouTube (RapidAPI youtube-mp36)</option>
@@ -687,8 +679,8 @@
             <!-- Dropzone -->
             <div id="upload-dropzone" class="border-2 border-dashed border-purple-800/50 hover:border-purple-500 rounded-xl p-5 text-center cursor-pointer bg-[#181130]/60 hover:bg-[#201740]/80 transition group">
               <i data-lucide="upload-cloud" class="w-7 h-7 mx-auto text-purple-400 group-hover:text-purple-300 transition mb-1.5"></i>
-              <p class="text-xs sm:text-sm font-medium text-purple-100">Kéo thả file vào đây hoặc bấm chọn file</p>
-              <p class="text-[11px] text-purple-400/60 mt-0.5">Có thể chọn nhiều file</p>
+              <p class="text-xs sm:text-sm font-medium text-white">Kéo thả file vào đây hoặc bấm chọn file</p>
+              <p class="text-[11px] text-zinc-400 mt-0.5">Có thể chọn nhiều file</p>
               <input id="upload-file-input" type="file" multiple accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg" class="hidden" />
             </div>
 
@@ -711,7 +703,7 @@
 
             <!-- YouTube URL / ID input -->
             <div>
-              <label class="block text-xs font-medium text-purple-200 mb-1" for="youtube-url-input">
+              <label class="block text-xs font-medium text-white mb-1" for="youtube-url-input">
                 Link hoặc Mã Video YouTube <span class="text-red-400">*</span>
               </label>
               <div class="flex items-center gap-2">
@@ -719,12 +711,12 @@
                   id="youtube-url-input" 
                   type="text" 
                   placeholder="https://www.youtube.com/watch?v=... hoặc mã video"
-                  class="flex-1 px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 focus:outline-none focus:border-purple-400 font-mono"
+                  class="flex-1 px-3 py-2 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 font-mono"
                 />
                 <button 
                   type="button" 
                   id="btn-fetch-youtube-info" 
-                  class="px-3 py-2 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 border border-purple-800/40 text-xs font-medium transition flex items-center gap-1 flex-shrink-0 shadow-sm"
+                  class="px-3 py-2 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white border border-purple-800/40 text-xs font-medium transition flex items-center gap-1 flex-shrink-0 shadow-sm"
                 >
                   <i data-lucide="search" class="w-3.5 h-3.5"></i>
                   <span>Lấy thông tin</span>
@@ -735,22 +727,22 @@
             <!-- YouTube Fetched Preview Card -->
             <div id="youtube-preview-card" class="hidden p-3 rounded-lg bg-[#181130] border border-purple-800/40 text-xs space-y-2">
               <div>
-                <label class="block text-[11px] text-purple-300/70 mb-1" for="youtube-track-title">Tên bài hát (có thể sửa):</label>
+                <label class="block text-[11px] text-zinc-400 mb-1" for="youtube-track-title">Tên bài hát (có thể sửa):</label>
                 <input 
                   id="youtube-track-title" 
                   type="text" 
-                  class="w-full px-2.5 py-1.5 rounded bg-[#0B0813] border border-purple-900/60 text-xs text-slate-100 font-medium focus:outline-none focus:border-purple-400"
+                  class="w-full px-2.5 py-1.5 rounded bg-[#0B0813] border border-purple-900/60 text-xs text-white font-medium focus:outline-none focus:border-purple-400"
                 />
               </div>
 
-              <div class="flex items-center justify-between text-[11px] font-mono text-purple-400/70 pt-0.5">
+              <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400 pt-0.5">
                 <span id="youtube-track-duration">Thời lượng: 00:00</span>
                 <span id="youtube-track-status" class="text-emerald-400 font-medium">Sẵn sàng tải về</span>
               </div>
 
               <!-- Option: Save Offline immediately -->
               <div class="pt-1 border-t border-purple-900/40">
-                <label class="flex items-center gap-2 text-xs text-purple-200 cursor-pointer select-none">
+                <label class="flex items-center gap-2 text-xs text-white cursor-pointer select-none">
                   <input type="checkbox" id="youtube-save-offline-checkbox" checked class="rounded accent-purple-500" />
                   <span>Đồng thời lưu bản nghe Offline vào máy luôn</span>
                 </label>
@@ -760,26 +752,26 @@
 
           <!-- Shared Default Tags -->
           <div>
-            <label class="block text-xs font-medium text-purple-200 mb-1" for="upload-tags-input">
+            <label class="block text-xs font-medium text-white mb-1" for="upload-tags-input">
               Tags gán chung (phân cách bởi dấu phẩy)
             </label>
             <input 
               id="upload-tags-input" 
               type="text" 
               placeholder="ví dụ: chill, lofi, acoustic, youtube"
-              class="w-full px-3 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 focus:outline-none focus:border-purple-400"
+              class="w-full px-3 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400"
             />
             <div id="upload-tag-suggestions" class="flex flex-wrap gap-1 mt-1.5"></div>
           </div>
 
           <!-- Upload Progress Bar -->
           <div id="upload-progress-wrapper" class="hidden space-y-1 pt-1">
-            <div class="flex justify-between text-xs font-mono text-purple-300">
+            <div class="flex justify-between text-xs font-mono text-white">
               <span id="upload-status-label">Đang tải...</span>
               <span id="upload-percentage">0%</span>
             </div>
             <div class="w-full h-1.5 rounded-full bg-[#0B0813] border border-purple-900/40 overflow-hidden">
-              <div id="upload-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-300" style="width: 0%"></div>
+              <div id="upload-progress-bar" class="h-full bg-purple-500 transition-all duration-300" style="width: 0%"></div>
             </div>
           </div>
 
@@ -788,7 +780,7 @@
             <button 
               type="button" 
               id="btn-cancel-upload"
-              class="px-3 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 text-xs font-medium border border-purple-800/40 transition"
+              class="px-3 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white text-xs font-medium border border-purple-800/40 transition"
             >
               Huỷ
             </button>
@@ -796,7 +788,7 @@
               type="submit" 
               id="btn-start-upload"
               disabled
-              class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold transition shadow-md shadow-purple-900/50"
+              class="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold transition shadow-md shadow-purple-900/50"
             >
               Bắt Đầu Tải Lên
             </button>
@@ -808,12 +800,12 @@
     </div>
 
     <!-- 3. Edit Song & Tags Modal -->
-    <div id="modal-edit-song" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-8 text-slate-100">
+    <div id="modal-edit-song" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-auto mx-auto relative text-white">
         
-        <div class="flex items-center justify-between pb-3 border-b border-purple-900/40">
+        <div class="sticky top-0 bg-[#140F27] z-20 flex items-center justify-between pb-3 border-b border-purple-900/40 -mx-5 -mt-5 px-5 pt-5 rounded-t-2xl">
           <h2 class="text-sm font-semibold text-white">Chỉnh Sửa Bài Hát & Tags</h2>
-          <button id="btn-close-edit" class="p-1 rounded-md text-purple-400 hover:text-white hover:bg-purple-900/30 transition">
+          <button id="btn-close-edit" class="p-1.5 rounded-lg text-zinc-400 hover:text-white bg-purple-950/60 hover:bg-purple-900/80 border border-purple-800/40 transition" title="Đóng">
             <i data-lucide="x" class="w-4 h-4"></i>
           </button>
         </div>
@@ -823,20 +815,20 @@
 
           <!-- Title -->
           <div>
-            <label class="block text-xs font-medium text-purple-200 mb-1" for="edit-song-title">
+            <label class="block text-xs font-medium text-white mb-1" for="edit-song-title">
               Tên bài hát
             </label>
             <input 
               id="edit-song-title" 
               type="text" 
               required
-              class="w-full px-3 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-slate-100 focus:outline-none focus:border-purple-400"
+              class="w-full px-3 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400"
             />
           </div>
 
           <!-- Tags list & add -->
           <div>
-            <label class="block text-xs font-medium text-purple-200 mb-1">Tags của bài</label>
+            <label class="block text-xs font-medium text-white mb-1">Tags của bài</label>
             <div id="edit-current-tags" class="flex flex-wrap gap-1.5 mb-2 min-h-[30px] p-2 rounded-lg bg-[#0B0813] border border-purple-900/60"></div>
 
             <div class="flex items-center gap-1.5">
@@ -844,19 +836,19 @@
                 id="edit-new-tag-input" 
                 type="text" 
                 placeholder="Thêm tag mới..." 
-                class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-slate-100 focus:outline-none focus:border-purple-400"
+                class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400"
               />
               <button 
                 type="button" 
                 id="btn-add-edit-tag"
-                class="px-2.5 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-purple-200 text-xs font-medium border border-purple-700/50 transition"
+                class="px-2.5 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-white text-xs font-medium border border-purple-700/50 transition"
               >
                 + Thêm
               </button>
             </div>
 
             <div class="mt-2.5">
-              <span class="text-[11px] text-purple-400/60 block mb-1">Tags có sẵn:</span>
+              <span class="text-[11px] text-zinc-400 block mb-1">Tags có sẵn:</span>
               <div id="edit-library-tags-list" class="flex flex-wrap gap-1 max-h-20 overflow-y-auto"></div>
             </div>
           </div>
@@ -866,13 +858,13 @@
             <button 
               type="button" 
               id="btn-cancel-edit"
-              class="px-3 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 text-xs font-medium border border-purple-800/40 transition"
+              class="px-3 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white text-xs font-medium border border-purple-800/40 transition"
             >
               Huỷ
             </button>
             <button 
               type="submit" 
-              class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-md shadow-purple-900/50 transition"
+              class="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-md shadow-purple-900/50 transition"
             >
               Lưu Thay Đổi
             </button>
@@ -884,12 +876,12 @@
     </div>
 
     <!-- 4. Tag Manager Modal -->
-    <div id="modal-tag-manager" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-8 text-slate-100">
+    <div id="modal-tag-manager" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-auto mx-auto relative text-white">
         
-        <div class="flex items-center justify-between pb-3 border-b border-purple-900/40">
+        <div class="sticky top-0 bg-[#140F27] z-20 flex items-center justify-between pb-3 border-b border-purple-900/40 -mx-5 -mt-5 px-5 pt-5 rounded-t-2xl">
           <h2 class="text-sm font-semibold text-white">Quản Lý Thẻ Tags</h2>
-          <button id="btn-close-tag-manager" class="p-1 rounded-md text-purple-400 hover:text-white hover:bg-purple-900/30 transition">
+          <button id="btn-close-tag-manager" class="p-1.5 rounded-lg text-zinc-400 hover:text-white bg-purple-950/60 hover:bg-purple-900/80 border border-purple-800/40 transition" title="Đóng">
             <i data-lucide="x" class="w-4 h-4"></i>
           </button>
         </div>
@@ -902,14 +894,14 @@
     </div>
 
     <!-- 5. Confirmation Modal: Delete from R2 & Local -->
-    <div id="modal-confirm-delete" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 text-center text-slate-100">
+    <div id="modal-confirm-delete" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-auto mx-auto text-center text-white relative">
         <h3 class="text-sm font-semibold text-white mb-1">Xác Nhận Xoá Bài Hát?</h3>
-        <p id="confirm-delete-message" class="text-xs text-purple-300/70 mb-4 leading-relaxed">
+        <p id="confirm-delete-message" class="text-xs text-zinc-300 mb-4 leading-relaxed">
           Bài hát sẽ bị xoá khỏi Cloudflare R2 và bộ nhớ lưu trữ offline.
         </p>
         <div class="flex items-center justify-center gap-2">
-          <button id="btn-cancel-delete" class="px-3.5 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 text-xs font-medium border border-purple-800/40 transition">
+          <button id="btn-cancel-delete" class="px-3.5 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white text-xs font-medium border border-purple-800/40 transition">
             Huỷ bỏ
           </button>
           <button id="btn-execute-delete" class="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-medium transition shadow-md shadow-red-950/40">
@@ -920,14 +912,14 @@
     </div>
 
     <!-- 6. Confirmation Modal: Remove Offline Copy Only -->
-    <div id="modal-confirm-remove-offline" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 text-center text-slate-100">
+    <div id="modal-confirm-remove-offline" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-auto mx-auto text-center text-white relative">
         <h3 class="text-sm font-semibold text-white mb-1">Xác Nhận Xoá Bản Offline?</h3>
-        <p class="text-xs text-purple-300/70 mb-4 leading-relaxed">
+        <p class="text-xs text-zinc-300 mb-4 leading-relaxed">
           File lưu trên thiết bị sẽ được xoá để giải phóng bộ nhớ. File gốc trên Cloudflare R2 vẫn được giữ nguyên.
         </p>
         <div class="flex items-center justify-center gap-2">
-          <button id="btn-cancel-remove-offline" class="px-3.5 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-purple-200 text-xs font-medium border border-purple-800/40 transition">
+          <button id="btn-cancel-remove-offline" class="px-3.5 py-1.5 rounded-lg bg-[#1D1438] hover:bg-[#281D4C] text-zinc-300 hover:text-white text-xs font-medium border border-purple-800/40 transition">
             Giữ lại
           </button>
           <button id="btn-execute-remove-offline" class="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-medium transition shadow-md shadow-amber-950/40">
@@ -938,20 +930,20 @@
     </div>
 
     <!-- 7. iOS Safari PWA Install Guide Modal -->
-    <div id="modal-ios-install" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 text-slate-100">
-        <div class="flex items-center justify-between pb-3 border-b border-purple-900/40 mb-3">
+    <div id="modal-ios-install" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden overflow-y-auto overscroll-contain p-3 sm:p-6 items-start justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div class="w-full max-w-sm rounded-2xl bg-[#140F27] border border-purple-800/50 shadow-2xl p-5 my-auto mx-auto text-white relative">
+        <div class="sticky top-0 bg-[#140F27] z-20 flex items-center justify-between pb-3 border-b border-purple-900/40 -mx-5 -mt-5 px-5 pt-5 rounded-t-2xl mb-3">
           <h3 class="text-sm font-semibold text-white">Cài đặt trên iPhone / iPad</h3>
-          <button id="btn-close-ios-install" class="p-1 rounded-md text-purple-400 hover:text-white hover:bg-purple-900/30 transition">
+          <button id="btn-close-ios-install" class="p-1.5 rounded-lg text-zinc-400 hover:text-white bg-purple-950/60 hover:bg-purple-900/80 border border-purple-800/40 transition" title="Đóng">
             <i data-lucide="x" class="w-4 h-4"></i>
           </button>
         </div>
-        <div class="space-y-2.5 text-xs text-purple-200/90">
+        <div class="space-y-2.5 text-xs text-zinc-300">
           <p>1. Bấm nút <strong>Chia sẻ (Share)</strong> ở thanh công cụ Safari.</p>
           <p>2. Chọn <strong>Thêm vào MH chính (Add to Home Screen)</strong>.</p>
           <p>3. Mở ứng dụng từ màn hình chính để nghe nhạc offline.</p>
         </div>
-        <button id="btn-confirm-ios-install" class="w-full mt-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-md shadow-purple-900/50 transition">
+        <button id="btn-confirm-ios-install" class="w-full mt-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs shadow-md shadow-purple-900/50 transition">
           Đã hiểu
         </button>
       </div>
