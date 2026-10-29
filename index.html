@@ -1025,6 +1025,57 @@
       </div>
     </div>
 
+    <!-- 8. Floating Song Action Dropdown Menu -->
+    <div 
+      id="song-action-menu" 
+      class="fixed z-50 hidden min-w-[200px] rounded-xl bg-[#18122E] border border-purple-700/60 shadow-2xl p-1.5 backdrop-blur-2xl text-white select-none"
+      role="menu"
+    >
+      <div class="px-2.5 py-1.5 border-b border-purple-900/50 mb-1">
+        <p id="song-menu-title" class="text-xs font-semibold text-white truncate max-w-[180px]">Tên bài hát</p>
+      </div>
+
+      <div class="space-y-0.5">
+        <!-- Download / Offline Option -->
+        <button 
+          id="song-menu-btn-offline" 
+          type="button" 
+          class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-200 hover:text-white hover:bg-purple-900/50 transition text-left cursor-pointer"
+        >
+          <span id="song-menu-offline-icon" class="w-4 h-4 flex items-center justify-center shrink-0 text-purple-400">
+            <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
+          </span>
+          <span id="song-menu-offline-text" class="truncate">Tải về nghe Offline</span>
+        </button>
+
+        <!-- Edit Song Option -->
+        <button 
+          id="song-menu-btn-edit" 
+          type="button" 
+          class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-200 hover:text-white hover:bg-purple-900/50 transition text-left cursor-pointer"
+        >
+          <span class="w-4 h-4 flex items-center justify-center shrink-0 text-purple-400">
+            <i data-lucide="edit-2" class="w-4 h-4"></i>
+          </span>
+          <span>Sửa tên & tags</span>
+        </button>
+
+        <div class="h-px bg-purple-900/50 my-1"></div>
+
+        <!-- Delete Song Option -->
+        <button 
+          id="song-menu-btn-delete" 
+          type="button" 
+          class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-950/50 transition text-left cursor-pointer"
+        >
+          <span class="w-4 h-4 flex items-center justify-center shrink-0 text-red-400">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </span>
+          <span>Xoá bài hát</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Floating Toast Notifications Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 

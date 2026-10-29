@@ -1212,6 +1212,7 @@ class SymphonyApp {
     this.downloadingSongIds = new Set();
     this.songToDelete = null;
     this.songToRemoveOffline = null;
+    this.activeMenuSongId = null;
 
     this.player = new AudioPlayerController({
       audioElement: document.getElementById('native-audio'),
@@ -2715,6 +2716,140 @@ class SymphonyApp {
     document.getElementById('modal-ios-install')?.addEventListener('click', (e) => {
       if (e.target === document.getElementById('modal-ios-install')) hideIosInstall();
     });
+
+    // 3-dot Song Action Menu Listeners
+    const songMenuOfflineBtn = document.getElementById('song-menu-btn-offline');
+    if (songMenuOfflineBtn) {
+      songMenuOfflineBtn.addEventListener('click', () => {
+        const songId = this.activeMenuSongId;
+        this.closeSongMenu();
+        const song = this.library.songs.find(s => s.id === songId);
+        if (song) this.downloadSongOffline(song);
+      });
+    }
+
+    const songMenuEditBtn = document.getElementById('song-menu-btn-edit');
+    if (songMenuEditBtn) {
+      songMenuEditBtn.addEventListener('click', () => {
+        const songId = this.activeMenuSongId;
+        this.closeSongMenu();
+        if (songId) this.openEditSongModal(songId);
+      });
+    }
+
+    const songMenuDeleteBtn = document.getElementById('song-menu-btn-delete');
+    if (songMenuDeleteBtn) {
+      songMenuDeleteBtn.addEventListener('click', () => {
+        const songId = this.activeMenuSongId;
+        this.closeSongMenu();
+        const song = this.library.songs.find(s => s.id === songId);
+        if (song) {
+          this.songToDelete = song;
+          const modal = document.getElementById('modal-confirm-delete');
+          const msg = document.getElementById('confirm-delete-message');
+          if (msg) msg.textContent = `Bài hát "${song.title}" sẽ bị xoá khỏi Cloudflare R2 và máy.`;
+          if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (window.lucide) window.lucide.createIcons({ root: modal });
+          }
+        }
+      });
+    }
+
+    // Auto close context menu when clicking outside, scrolling list, or pressing Escape
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('song-action-menu');
+      if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target) && !e.target.closest('.btn-song-menu')) {
+        this.closeSongMenu();
+      }
+    });
+
+    const scrollContainer = document.getElementById('songs-scroll-viewport');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', () => {
+        this.closeSongMenu();
+      }, { passive: true });
+    }
+
+    window.addEventListener('resize', () => {
+      this.closeSongMenu();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeSongMenu();
+      }
+    });
+  }
+
+  isSongMenuHidden() {
+    const menu = document.getElementById('song-action-menu');
+    return !menu || menu.classList.contains('hidden');
+  }
+
+  closeSongMenu() {
+    const menu = document.getElementById('song-action-menu');
+    if (menu) menu.classList.add('hidden');
+    this.activeMenuSongId = null;
+  }
+
+  openSongMenu(song, triggerElement) {
+    this.activeMenuSongId = song.id;
+    const menu = document.getElementById('song-action-menu');
+    if (!menu) return;
+
+    const titleEl = document.getElementById('song-menu-title');
+    if (titleEl) titleEl.textContent = song.title;
+
+    const offlineBtn = document.getElementById('song-menu-btn-offline');
+    const offlineIcon = document.getElementById('song-menu-offline-icon');
+    const offlineText = document.getElementById('song-menu-offline-text');
+
+    const isDownloading = this.downloadingSongIds.has(song.id);
+    const isCached = this.cachedSongIds.has(song.id);
+
+    if (offlineBtn && offlineIcon && offlineText) {
+      if (isDownloading) {
+        offlineBtn.disabled = true;
+        offlineBtn.className = 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-purple-400/70 cursor-wait text-left';
+        offlineIcon.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-purple-400"></i>';
+        offlineText.textContent = 'Đang tải về máy...';
+      } else if (isCached) {
+        offlineBtn.disabled = false;
+        offlineBtn.className = 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-amber-300 hover:text-amber-200 hover:bg-amber-950/40 transition text-left cursor-pointer';
+        offlineIcon.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4 text-amber-400"></i>';
+        offlineText.textContent = 'Xoá bản lưu Offline';
+      } else {
+        offlineBtn.disabled = false;
+        offlineBtn.className = 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-200 hover:text-white hover:bg-purple-900/50 transition text-left cursor-pointer';
+        offlineIcon.innerHTML = '<i data-lucide="arrow-down-to-line" class="w-4 h-4 text-purple-400"></i>';
+        offlineText.textContent = 'Tải về nghe Offline';
+      }
+    }
+
+    menu.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons({ root: menu });
+
+    // Calculate dynamic coordinates
+    const rect = triggerElement.getBoundingClientRect();
+    const menuWidth = menu.offsetWidth || 200;
+    const menuHeight = menu.offsetHeight || 140;
+
+    let left = rect.right - menuWidth;
+    if (left < 10) left = 10;
+    if (left + menuWidth > window.innerWidth - 10) {
+      left = window.innerWidth - menuWidth - 10;
+    }
+
+    let top = rect.bottom + 6;
+    if (top + menuHeight > window.innerHeight - 15) {
+      top = rect.top - menuHeight - 6;
+    }
+    if (top < 10) top = 10;
+
+    menu.style.top = `${top}px`;
+    menu.style.left = `${left}px`;
   }
 
   handleInstallClick() {
@@ -3087,34 +3222,13 @@ class SymphonyApp {
     }
 
     if (emptyState) emptyState.classList.add('hidden');
+    this.closeSongMenu();
 
-    container.innerHTML = filtered.map((song, index) => {
+    container.innerHTML = filtered.map((song) => {
       const isCurrentlyPlaying = this.player.isPlaying && this.player.currentSong?.id === song.id;
       const isCurrentSong = this.player.currentSong?.id === song.id;
       const isCached = this.cachedSongIds.has(song.id);
       const isDownloading = this.downloadingSongIds.has(song.id);
-
-      let offlineBtnHtml = '';
-      if (isDownloading) {
-        offlineBtnHtml = `
-          <button class="p-1.5 rounded-md text-purple-400 cursor-wait" title="Đang tải về máy...">
-            <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
-          </button>
-        `;
-      } else if (isCached) {
-        offlineBtnHtml = `
-          <button class="btn-toggle-offline p-1.5 rounded-md text-emerald-400 hover:text-red-400 hover:bg-purple-900/40 transition group" data-song-id="${song.id}" title="Đã lưu offline (Bấm để xoá giải phóng bộ nhớ)">
-            <i data-lucide="check" class="w-4 h-4 group-hover:hidden"></i>
-            <i data-lucide="trash" class="w-4 h-4 hidden group-hover:block"></i>
-          </button>
-        `;
-      } else {
-        offlineBtnHtml = `
-          <button class="btn-toggle-offline p-1.5 rounded-md text-purple-400/60 hover:text-purple-200 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Tải về máy để nghe Offline">
-            <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
-          </button>
-        `;
-      }
 
       const activeBgClass = isCurrentSong 
         ? 'bg-purple-950/80 border-2 border-purple-400 shadow-xl shadow-purple-950/80 ring-1 ring-purple-400/40 relative overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1.5 before:bg-purple-400' 
@@ -3140,6 +3254,27 @@ class SymphonyApp {
         ? `<span class="active-playing-badge px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase shrink-0 ${isCurrentlyPlaying ? 'bg-purple-500 text-white animate-pulse' : 'bg-purple-800 text-purple-200'}">${isCurrentlyPlaying ? 'Đang phát' : 'Tạm dừng'}</span>`
         : '';
 
+      let offlineStatusIconHtml = '';
+      if (isDownloading) {
+        offlineStatusIconHtml = `
+          <span class="inline-flex items-center text-purple-400 shrink-0" title="Đang tải về máy...">
+            <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i>
+          </span>
+        `;
+      } else if (isCached) {
+        offlineStatusIconHtml = `
+          <span class="inline-flex items-center text-emerald-400 shrink-0" title="Đã tải offline">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+          </span>
+        `;
+      } else {
+        offlineStatusIconHtml = `
+          <span class="inline-flex items-center text-zinc-500/70 shrink-0" title="Chưa tải offline (Phát từ Cloud)">
+            <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
+          </span>
+        `;
+      }
+
       return `
         <div class="song-row flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border transition ${activeBgClass}" data-song-id="${song.id}">
           
@@ -3151,15 +3286,13 @@ class SymphonyApp {
 
             <div class="min-w-0 flex-1">
               <div class="song-title-wrapper flex items-center gap-2 flex-wrap">
-                <span class="text-xs font-mono text-zinc-500">${String(index + 1).padStart(2, '0')}</span>
                 <h4 class="${titleColorClass} truncate">${escapeHTML(song.title)}</h4>
                 ${badgeHtml}
               </div>
 
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                ${offlineStatusIconHtml}
                 <span class="text-[11px] font-mono text-zinc-400">${formatDuration(song.duration)}</span>
-                <span class="text-purple-900">•</span>
-                <span class="text-[11px] font-mono text-zinc-400">${formatFileSize(song.size)}</span>
                 
                 ${(song.tags || []).map(t => `
                   <span class="inline-block px-1.5 py-0.2 rounded text-[10px] bg-purple-950/70 text-purple-300 border border-purple-800/40 font-medium">
@@ -3170,16 +3303,15 @@ class SymphonyApp {
             </div>
           </div>
 
-          <!-- Right: Actions -->
-          <div class="flex items-center gap-1 flex-shrink-0">
-            ${offlineBtnHtml}
-
-            <button class="btn-edit-song p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Sửa tên và tags">
-              <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
-            </button>
-
-            <button class="btn-delete-song p-1.5 rounded-md text-zinc-400 hover:text-red-400 hover:bg-purple-900/40 transition" data-song-id="${song.id}" title="Xoá bài hát">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          <!-- Right: 3-dot Menu Button -->
+          <div class="flex items-center flex-shrink-0">
+            <button 
+              class="btn-song-menu p-1.5 sm:p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-purple-900/40 transition active:scale-95" 
+              data-song-id="${song.id}" 
+              title="Tuỳ chọn" 
+              aria-label="Tuỳ chọn cho bài hát"
+            >
+              <i data-lucide="more-vertical" class="w-4 h-4"></i>
             </button>
           </div>
 
@@ -3201,35 +3333,17 @@ class SymphonyApp {
       });
     });
 
-    container.querySelectorAll('.btn-toggle-offline').forEach(btn => {
+    container.querySelectorAll('.btn-song-menu').forEach(btn => {
       btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const songId = e.currentTarget.getAttribute('data-song-id');
         const song = this.library.songs.find(s => s.id === songId);
-        if (song) this.downloadSongOffline(song);
-      });
-    });
+        if (!song) return;
 
-    container.querySelectorAll('.btn-edit-song').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const songId = e.currentTarget.getAttribute('data-song-id');
-        this.openEditSongModal(songId);
-      });
-    });
-
-    container.querySelectorAll('.btn-delete-song').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const songId = e.currentTarget.getAttribute('data-song-id');
-        const song = this.library.songs.find(s => s.id === songId);
-        if (song) {
-          this.songToDelete = song;
-          const modal = document.getElementById('modal-confirm-delete');
-          const msg = document.getElementById('confirm-delete-message');
-          if (msg) msg.textContent = `Bài hát "${song.title}" sẽ bị xoá khỏi Cloudflare R2 và máy.`;
-          if (modal) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            if (window.lucide) window.lucide.createIcons({ root: modal });
-          }
+        if (this.activeMenuSongId === song.id && !this.isSongMenuHidden()) {
+          this.closeSongMenu();
+        } else {
+          this.openSongMenu(song, e.currentTarget);
         }
       });
     });
