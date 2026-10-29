@@ -2824,7 +2824,7 @@ class SymphonyApp {
         offlineBtn.disabled = false;
         offlineBtn.className = 'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-200 hover:text-white hover:bg-purple-900/50 transition text-left cursor-pointer';
         offlineIcon.innerHTML = '<i data-lucide="arrow-down-to-line" class="w-4 h-4 text-purple-400"></i>';
-        offlineText.textContent = 'Tải về nghe Offline';
+        offlineText.textContent = 'Tải về';
       }
     }
 
