@@ -753,6 +753,7 @@ class AudioPlayerController {
     this.isShuffle = false; // independent toggle for shuffle
     this.playedSongIds = new Set();
     this.isPlaying = false;
+    this.isPriming = false;
     this.currentTime = 0;
     this.duration = 0;
 
@@ -760,37 +761,68 @@ class AudioPlayerController {
     this.setupMediaSession();
   }
 
+  primeAudioElement() {
+    if (!this.audioElement) return;
+    if (this.isPlaying && !this.audioElement.paused) return;
+
+    try {
+      this.isPriming = true;
+      this.audioElement.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
+      const playPromise = this.audioElement.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(() => {
+          if (this.isPriming) {
+            this.audioElement.pause();
+            this.isPriming = false;
+          }
+        }).catch(() => {
+          this.isPriming = false;
+        });
+      } else {
+        this.isPriming = false;
+      }
+    } catch (e) {
+      this.isPriming = false;
+    }
+  }
+
   setupAudioListeners() {
     const a = this.audioElement;
 
     a.addEventListener('play', () => {
+      if (this.isPriming) return;
       this.isPlaying = true;
       this.updateMediaSessionState();
       this.onStateChange();
     });
 
     a.addEventListener('pause', () => {
+      if (this.isPriming) return;
       this.isPlaying = false;
       this.updateMediaSessionState();
       this.onStateChange();
     });
 
     a.addEventListener('timeupdate', () => {
+      if (this.isPriming) return;
       this.currentTime = a.currentTime || 0;
       this.duration = a.duration || 0;
       this.onStateChange();
     });
 
     a.addEventListener('loadedmetadata', () => {
+      if (this.isPriming) return;
       this.duration = a.duration || 0;
       this.onStateChange();
     });
 
     a.addEventListener('ended', () => {
+      if (this.isPriming) return;
       this.handleTrackEnded();
     });
 
     a.addEventListener('error', (e) => {
+      if (this.isPriming) return;
       console.error('Audio playback error', e, a.error);
       this.isPlaying = false;
       this.onStateChange();
@@ -840,6 +872,9 @@ class AudioPlayerController {
 
   async playSong(song) {
     if (!song) return;
+
+    // Pre-warm / unlock audio pipeline synchronously within the user gesture
+    this.primeAudioElement();
 
     // Revoke previous object URL to avoid memory leak
     if (this.currentObjectURL) {
@@ -892,6 +927,10 @@ class AudioPlayerController {
       }
     }
 
+    this.isPriming = false;
+    try {
+      this.audioElement.pause();
+    } catch {}
     this.audioElement.src = playbackUrl;
     try {
       await this.audioElement.play();
@@ -2781,6 +2820,17 @@ class SymphonyApp {
         this.closeSongMenu();
       }
     });
+
+    // Global user interaction unlock for mobile browsers (iOS Safari / WebKit)
+    const unlockOnFirstTouch = () => {
+      this.player.primeAudioElement();
+      document.removeEventListener('touchstart', unlockOnFirstTouch);
+      document.removeEventListener('touchend', unlockOnFirstTouch);
+      document.removeEventListener('click', unlockOnFirstTouch);
+    };
+    document.addEventListener('touchstart', unlockOnFirstTouch, { passive: true });
+    document.addEventListener('touchend', unlockOnFirstTouch, { passive: true });
+    document.addEventListener('click', unlockOnFirstTouch, { passive: true });
   }
 
   isSongMenuHidden() {

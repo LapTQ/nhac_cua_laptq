@@ -4,7 +4,7 @@
  * Large audio files are stored in IndexedDB (PersonalMusicDB) rather than CacheStorage.
  */
 
-const CACHE_NAME = 'nhac_cua_laptq-v14';
+const CACHE_NAME = 'nhac_cua_laptq-v15';
 
 const STATIC_ASSETS = [
   './',
