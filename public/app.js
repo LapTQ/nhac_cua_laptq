@@ -241,6 +241,9 @@ class R2StorageAdapter {
       if (!library.songs || !Array.isArray(library.songs)) {
         library.songs = [];
       }
+      if (!library.tags || !Array.isArray(library.tags)) {
+        library.tags = [];
+      }
       return library;
     } catch (error) {
       clearTimeout(timer);
@@ -260,7 +263,8 @@ class R2StorageAdapter {
         const initialLibrary = {
           version: 1,
           updatedAt: Date.now(),
-          songs: []
+          songs: [],
+          tags: []
         };
         await this.saveLibrary(initialLibrary);
         return initialLibrary;
@@ -275,6 +279,9 @@ class R2StorageAdapter {
     }
 
     library.updatedAt = Date.now();
+    if (!library.tags || !Array.isArray(library.tags)) {
+      library.tags = [];
+    }
     const payload = JSON.stringify(library, null, 2);
     // Convert string to Uint8Array for full WebKit/Safari WebCrypto SHA256 compatibility
     const bodyData = new TextEncoder().encode(payload);
@@ -1193,7 +1200,7 @@ class SymphonyApp {
     this.uploadSourceMode = 'local';
     this.currentYouTubeInfo = null;
 
-    this.library = { version: 1, updatedAt: Date.now(), songs: [] };
+    this.library = { version: 1, updatedAt: Date.now(), songs: [], tags: [] };
     this.cachedSongIds = new Set();
     this.selectedTags = new Set();
     this.tagMode = 'OR';
@@ -1244,12 +1251,17 @@ class SymphonyApp {
       if (cached) {
         this.library = JSON.parse(cached);
         if (!this.library.songs) this.library.songs = [];
+        if (!this.library.tags || !Array.isArray(this.library.tags)) {
+          this.library.tags = [];
+        }
+        this.ensureTagsRegistered();
       }
     } catch (e) {}
   }
 
   saveCachedLibrary() {
     try {
+      this.ensureTagsRegistered();
       localStorage.setItem('cached_library', JSON.stringify(this.library));
     } catch (e) {}
   }
@@ -1352,6 +1364,10 @@ class SymphonyApp {
     try {
       const remoteLib = await this.storageAdapter.fetchLibrary();
       this.library = remoteLib;
+      if (!this.library.tags || !Array.isArray(this.library.tags)) {
+        this.library.tags = [];
+      }
+      this.ensureTagsRegistered();
       this.saveCachedLibrary();
       this.cachedSongIds = await this.offlineAdapter.getAllCachedIds();
 
@@ -2434,26 +2450,32 @@ class SymphonyApp {
 
     const allTags = this.extractAllTags();
     if (allTags.length === 0) {
-      container.innerHTML = '<p class="text-xs text-purple-400/40 py-3 text-center">Chưa có tag nào trong thư viện.</p>';
+      container.innerHTML = '<p class="text-xs text-zinc-500 py-3 text-center">Chưa có tag nào trong thư viện.</p>';
       return;
     }
 
-    container.innerHTML = allTags.map(item => `
-      <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-[#181130] border border-purple-800/40 text-xs">
-        <div class="flex items-center gap-1.5">
-          <span class="font-medium text-white">${escapeHTML(item.tag)}</span>
-          <span class="text-[10px] text-purple-400">(${item.count})</span>
+    container.innerHTML = allTags.map(item => {
+      const countLabel = item.count > 0 
+        ? `<span class="text-[10px] text-purple-400">(${item.count} bài)</span>`
+        : `<span class="text-[10px] text-zinc-500">(0 bài)</span>`;
+
+      return `
+        <div class="flex items-center justify-between gap-2 p-2 rounded-lg bg-[#181130] border border-purple-800/40 text-xs">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="font-medium text-white truncate">${escapeHTML(item.tag)}</span>
+            ${countLabel}
+          </div>
+          <div class="flex items-center gap-1 shrink-0">
+            <button class="btn-rename-tag px-2 py-0.5 rounded bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-700/50 text-[11px] font-medium" data-tag="${escapeHTML(item.tag)}">
+              Đổi tên
+            </button>
+            <button class="btn-delete-tag p-1 text-zinc-400 hover:text-red-400 transition" data-tag="${escapeHTML(item.tag)}" data-count="${item.count}" title="Xoá tag này">
+              <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
         </div>
-        <div class="flex items-center gap-1">
-          <button class="btn-rename-tag px-2 py-0.5 rounded bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-700/50 text-[11px] font-medium" data-tag="${escapeHTML(item.tag)}">
-            Đổi tên
-          </button>
-          <button class="btn-delete-tag p-1 text-purple-400/60 hover:text-red-400" data-tag="${escapeHTML(item.tag)}" title="Xoá tag này">
-            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     container.querySelectorAll('.btn-rename-tag').forEach(btn => {
       btn.addEventListener('click', async (e) => {
@@ -2468,7 +2490,11 @@ class SymphonyApp {
     container.querySelectorAll('.btn-delete-tag').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         const tag = e.currentTarget.getAttribute('data-tag');
-        if (confirm(`Bạn có chắc muốn xoá tag "${tag}" khỏi tất cả bài hát?`)) {
+        const count = parseInt(e.currentTarget.getAttribute('data-count') || '0', 10);
+        const confirmMsg = count > 0 
+          ? `Bạn có chắc muốn xoá tag "${tag}" khỏi tất cả ${count} bài hát và thư viện?`
+          : `Bạn có chắc muốn xoá tag "${tag}" khỏi thư viện?`;
+        if (confirm(confirmMsg)) {
           this.deleteTagGlobally(tag);
         }
       });
@@ -2477,15 +2503,56 @@ class SymphonyApp {
     if (window.lucide) window.lucide.createIcons({ root: container });
   }
 
+  async addTagManually(newTag) {
+    const clean = newTag.trim().toLowerCase();
+    if (!clean) return;
+
+    this.ensureTagsRegistered();
+    if (this.library.tags.some(t => t.toLowerCase() === clean)) {
+      this.showToast(`Tag "${clean}" đã có trong thư viện.`, 'warning');
+      return;
+    }
+
+    this.library.tags.push(clean);
+    this.renderTagManagerList();
+    this.render();
+
+    if (this.storageAdapter.hasConfig() && navigator.onLine) {
+      await this.storageAdapter.saveLibrary(this.library);
+      this.saveCachedLibrary();
+    }
+    this.showToast(`Đã tạo tag "${clean}".`, 'success');
+  }
+
   async renameTagGlobally(oldTag, newTag) {
+    const cleanOld = oldTag.toLowerCase();
+    const cleanNew = newTag.toLowerCase();
+    this.ensureTagsRegistered();
+
     let changed = 0;
     this.library.songs.forEach(song => {
-      const idx = song.tags.findIndex(t => t.toLowerCase() === oldTag.toLowerCase());
-      if (idx !== -1) {
-        song.tags[idx] = newTag;
-        changed++;
+      if (Array.isArray(song.tags)) {
+        const idx = song.tags.findIndex(t => t.toLowerCase() === cleanOld);
+        if (idx !== -1) {
+          song.tags[idx] = cleanNew;
+          changed++;
+        }
       }
     });
+
+    if (Array.isArray(this.library.tags)) {
+      const idx = this.library.tags.findIndex(t => t.toLowerCase() === cleanOld);
+      if (idx !== -1) {
+        this.library.tags[idx] = cleanNew;
+      } else if (!this.library.tags.some(t => t.toLowerCase() === cleanNew)) {
+        this.library.tags.push(cleanNew);
+      }
+    }
+
+    if (this.selectedTags.has(cleanOld)) {
+      this.selectedTags.delete(cleanOld);
+      this.selectedTags.add(cleanNew);
+    }
 
     this.renderTagManagerList();
     this.render();
@@ -2498,14 +2565,23 @@ class SymphonyApp {
   }
 
   async deleteTagGlobally(tagToDelete) {
+    const cleanTag = tagToDelete.toLowerCase();
+    this.ensureTagsRegistered();
+
     let changed = 0;
     this.library.songs.forEach(song => {
-      const prevLen = song.tags.length;
-      song.tags = song.tags.filter(t => t.toLowerCase() !== tagToDelete.toLowerCase());
-      if (song.tags.length < prevLen) changed++;
+      if (Array.isArray(song.tags)) {
+        const prevLen = song.tags.length;
+        song.tags = song.tags.filter(t => t.toLowerCase() !== cleanTag);
+        if (song.tags.length < prevLen) changed++;
+      }
     });
 
-    this.selectedTags.delete(tagToDelete.toLowerCase());
+    if (Array.isArray(this.library.tags)) {
+      this.library.tags = this.library.tags.filter(t => t.toLowerCase() !== cleanTag);
+    }
+
+    this.selectedTags.delete(cleanTag);
     this.renderTagManagerList();
     this.render();
 
@@ -2521,6 +2597,23 @@ class SymphonyApp {
     document.getElementById('modal-tag-manager')?.addEventListener('click', (e) => {
       if (e.target === document.getElementById('modal-tag-manager')) {
         this.closeTagManagerModal();
+      }
+    });
+
+    const addTagFromInput = () => {
+      const input = document.getElementById('tag-manager-new-input');
+      const val = input ? input.value.trim() : '';
+      if (val) {
+        this.addTagManually(val);
+        input.value = '';
+      }
+    };
+
+    document.getElementById('btn-tag-manager-add')?.addEventListener('click', addTagFromInput);
+    document.getElementById('tag-manager-new-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addTagFromInput();
       }
     });
   }
@@ -2797,18 +2890,53 @@ class SymphonyApp {
      FILTER ENGINE & TAG CALCULATIONS
      ========================================================================== */
 
-  extractAllTags() {
-    const countMap = new Map();
-    for (const song of this.library.songs) {
-      if (Array.isArray(song.tags)) {
-        for (const rawTag of song.tags) {
-          const trimmed = rawTag.trim();
-          if (!trimmed) continue;
-          const lower = trimmed.toLowerCase();
-          countMap.set(lower, (countMap.get(lower) || 0) + 1);
+  ensureTagsRegistered() {
+    if (!this.library) return;
+    if (!Array.isArray(this.library.tags)) {
+      this.library.tags = [];
+    }
+    const tagSet = new Set(this.library.tags.map(t => t.trim().toLowerCase()));
+    if (Array.isArray(this.library.songs)) {
+      for (const song of this.library.songs) {
+        if (Array.isArray(song.tags)) {
+          for (const rawTag of song.tags) {
+            const clean = rawTag.trim().toLowerCase();
+            if (clean && !tagSet.has(clean)) {
+              tagSet.add(clean);
+              this.library.tags.push(clean);
+            }
+          }
         }
       }
     }
+  }
+
+  extractAllTags() {
+    this.ensureTagsRegistered();
+    const countMap = new Map();
+
+    // 1. Khởi tạo tất cả tags bền vững trong thư viện với số lượng 0 bài
+    if (Array.isArray(this.library.tags)) {
+      for (const rawTag of this.library.tags) {
+        const clean = rawTag.trim().toLowerCase();
+        if (clean) countMap.set(clean, 0);
+      }
+    }
+
+    // 2. Đếm số lượng bài hát thực tế của từng tag
+    if (Array.isArray(this.library.songs)) {
+      for (const song of this.library.songs) {
+        if (Array.isArray(song.tags)) {
+          for (const rawTag of song.tags) {
+            const clean = rawTag.trim().toLowerCase();
+            if (!clean) continue;
+            countMap.set(clean, (countMap.get(clean) || 0) + 1);
+          }
+        }
+      }
+    }
+
+    // 3. Sắp xếp: tag có nhiều bài hát lên trước, sau đó theo bảng chữ cái A-Z
     return Array.from(countMap.entries())
       .map(([tag, count]) => ({ tag, count }))
       .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));

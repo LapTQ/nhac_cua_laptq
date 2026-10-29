@@ -886,7 +886,24 @@
           </button>
         </div>
 
-        <div class="pt-3">
+        <!-- Add New Tag Section -->
+        <div class="flex items-center gap-1.5 pt-3 pb-2 border-b border-purple-900/40">
+          <input 
+            id="tag-manager-new-input" 
+            type="text" 
+            placeholder="Tạo tag mới..." 
+            class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0813] border border-purple-900/60 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400"
+          />
+          <button 
+            type="button" 
+            id="btn-tag-manager-add"
+            class="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition shadow-sm shrink-0"
+          >
+            + Thêm
+          </button>
+        </div>
+
+        <div class="pt-2.5">
           <div id="tag-manager-list" class="space-y-1.5 max-h-72 overflow-y-auto pr-1"></div>
         </div>
 
