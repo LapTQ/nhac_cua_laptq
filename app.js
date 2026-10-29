@@ -1491,10 +1491,12 @@ class SymphonyApp {
         btn?.classList.add('border-white', 'text-white', 'font-semibold');
         btn?.classList.remove('border-transparent', 'text-zinc-400', 'font-medium');
         panel?.classList.remove('hidden');
+        if (panel) panel.style.display = '';
       } else {
         btn?.classList.add('border-transparent', 'text-zinc-400', 'font-medium');
         btn?.classList.remove('border-white', 'text-white', 'font-semibold');
         panel?.classList.add('hidden');
+        if (panel) panel.style.display = 'none';
       }
     });
 

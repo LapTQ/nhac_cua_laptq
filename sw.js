@@ -4,7 +4,7 @@
  * Large audio files are stored in IndexedDB (PersonalMusicDB) rather than CacheStorage.
  */
 
-const CACHE_NAME = 'symphony-r2-v2';
+const CACHE_NAME = 'symphony-r2-v3';
 
 const STATIC_ASSETS = [
   './',

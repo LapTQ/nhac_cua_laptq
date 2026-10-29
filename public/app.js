@@ -1468,35 +1468,50 @@ class SymphonyApp {
   }
 
   /* ==========================================================================
-     SETTINGS MODAL & 1-CLICK SYNC (2 TABS: CLOUDFLARE R2 & RAPIDAPI YOUTUBE-MP36)
+     SETTINGS MODAL & 1-CLICK SYNC (3 TABS: ĐỒNG BỘ 1-CHẠM, CLOUDFLARE R2 & RAPIDAPI)
      ========================================================================== */
 
-  switchSettingsTab(tab = 'r2') {
+  switchSettingsTab(tab = 'sync') {
+    const tabBtnSync = document.getElementById('tab-btn-sync');
     const tabBtnR2 = document.getElementById('tab-btn-r2');
     const tabBtnRapid = document.getElementById('tab-btn-rapidapi');
+
+    const panelSync = document.getElementById('tab-panel-sync');
     const panelR2 = document.getElementById('tab-panel-r2');
     const panelRapid = document.getElementById('tab-panel-rapidapi');
 
-    if (tab === 'rapidapi') {
-      tabBtnRapid?.classList.add('border-white', 'text-white');
-      tabBtnRapid?.classList.remove('border-transparent', 'text-zinc-400');
-      panelRapid?.classList.remove('hidden');
+    const tabs = [
+      { id: 'sync', btn: tabBtnSync, panel: panelSync },
+      { id: 'r2', btn: tabBtnR2, panel: panelR2 },
+      { id: 'rapidapi', btn: tabBtnRapid, panel: panelRapid }
+    ];
 
-      tabBtnR2?.classList.add('border-transparent', 'text-zinc-400');
-      tabBtnR2?.classList.remove('border-white', 'text-white');
-      panelR2?.classList.add('hidden');
-    } else {
-      tabBtnR2?.classList.add('border-white', 'text-white');
-      tabBtnR2?.classList.remove('border-transparent', 'text-zinc-400');
-      panelR2?.classList.remove('hidden');
+    tabs.forEach(({ id, btn, panel }) => {
+      if (id === tab) {
+        btn?.classList.add('border-white', 'text-white', 'font-semibold');
+        btn?.classList.remove('border-transparent', 'text-zinc-400', 'font-medium');
+        panel?.classList.remove('hidden');
+        if (panel) panel.style.display = '';
+      } else {
+        btn?.classList.add('border-transparent', 'text-zinc-400', 'font-medium');
+        btn?.classList.remove('border-white', 'text-white', 'font-semibold');
+        panel?.classList.add('hidden');
+        if (panel) panel.style.display = 'none';
+      }
+    });
 
-      tabBtnRapid?.classList.add('border-transparent', 'text-zinc-400');
-      tabBtnRapid?.classList.remove('border-white', 'text-white');
-      panelRapid?.classList.add('hidden');
+    if (tab === 'sync') {
+      const exportInput = document.getElementById('export-base64-input');
+      if (this.storageAdapter.hasConfig()) {
+        const b64 = this.exportConfigBase64(this.storageAdapter.config, this.youtubeAdapter.config);
+        if (exportInput) exportInput.value = b64;
+      } else if (exportInput) {
+        exportInput.value = '';
+      }
     }
   }
 
-  openSettingsModal(initialTab = 'r2') {
+  openSettingsModal(initialTab = 'sync') {
     const modal = document.getElementById('modal-settings');
     if (!modal) return;
 
@@ -1564,7 +1579,25 @@ class SymphonyApp {
   setupSettingsModalEvents() {
     document.getElementById('btn-close-settings')?.addEventListener('click', () => this.closeSettingsModal());
 
+    // Close on backdrop click
+    document.getElementById('modal-settings')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-settings')) {
+        this.closeSettingsModal();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('modal-settings');
+        if (modal && !modal.classList.contains('hidden')) {
+          this.closeSettingsModal();
+        }
+      }
+    });
+
     // Tab navigation buttons
+    document.getElementById('tab-btn-sync')?.addEventListener('click', () => this.switchSettingsTab('sync'));
     document.getElementById('tab-btn-r2')?.addEventListener('click', () => this.switchSettingsTab('r2'));
     document.getElementById('tab-btn-rapidapi')?.addEventListener('click', () => this.switchSettingsTab('rapidapi'));
 
@@ -1654,16 +1687,46 @@ class SymphonyApp {
       }
     });
 
-    // Copy Base64 Export
+    // Click to select all for Export Input
+    document.getElementById('export-base64-input')?.addEventListener('click', (e) => {
+      e.target.select();
+    });
+
+    // Copy Base64 Export (with fallback for mobile/non-HTTPS environments)
     document.getElementById('btn-copy-export')?.addEventListener('click', () => {
       const input = document.getElementById('export-base64-input');
       if (!input || !input.value) {
-        this.showToast('Chưa có cấu hình để sao chép.', 'warning');
+        this.showToast('Chưa có cấu hình R2 để sao chép. Vui lòng cài đặt R2 trước.', 'warning');
         return;
       }
-      navigator.clipboard.writeText(input.value).then(() => {
-        this.showToast('Đã sao chép mã cấu hình (R2 + RapidAPI)!', 'success');
-      });
+
+      const copyViaExecCommand = () => {
+        input.select();
+        try {
+          document.execCommand('copy');
+          this.showToast('Đã sao chép mã cấu hình (R2 + RapidAPI)!', 'success');
+        } catch {
+          this.showToast('Không thể sao chép tự động, vui lòng chọn và chép thủ công.', 'warning');
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(input.value)
+          .then(() => {
+            this.showToast('Đã sao chép mã cấu hình (R2 + RapidAPI)!', 'success');
+          })
+          .catch(() => copyViaExecCommand());
+      } else {
+        copyViaExecCommand();
+      }
+    });
+
+    // Enter key support for Import Input
+    document.getElementById('import-base64-input')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btn-apply-import')?.click();
+      }
     });
 
     // Apply Base64 Import
@@ -1678,7 +1741,9 @@ class SymphonyApp {
       try {
         let jsonStr = val;
         if (!val.startsWith('{')) {
-          jsonStr = decodeURIComponent(escape(atob(val)));
+          // Remove potential spaces or line breaks introduced during copy/paste on mobile
+          const cleanVal = val.replace(/\s+/g, '');
+          jsonStr = decodeURIComponent(escape(atob(cleanVal)));
         }
         const data = JSON.parse(jsonStr);
         const cfg = data.config || data;
@@ -1695,6 +1760,7 @@ class SymphonyApp {
           });
         }
 
+        input.value = '';
         this.updateOnlineStatusDisplay();
         this.showToast('Đã nhập cấu hình thành công (R2 & RapidAPI)!', 'success');
         this.closeSettingsModal();
