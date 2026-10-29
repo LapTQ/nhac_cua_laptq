@@ -1472,17 +1472,21 @@ class SymphonyApp {
     });
 
     const seekSlider = document.getElementById('player-seek-slider');
+    seekSlider?.style.setProperty('--range-progress', '0%');
     seekSlider?.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
+      seekSlider.style.setProperty('--range-progress', `${val}%`);
       if (this.player.duration > 0) {
         this.player.seek((val / 100) * this.player.duration);
       }
     });
 
     const volSlider = document.getElementById('player-volume-slider');
+    volSlider?.style.setProperty('--range-progress', `${(parseFloat(volSlider.value || 0.85) * 100).toFixed(1)}%`);
     volSlider?.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
       this.player.setVolume(val);
+      volSlider.style.setProperty('--range-progress', `${(val * 100).toFixed(1)}%`);
       const volText = document.getElementById('volume-level-text');
       if (volText) volText.textContent = `${Math.round(val * 100)}%`;
     });
@@ -3288,8 +3292,36 @@ class SymphonyApp {
     if (curTimeEl) curTimeEl.textContent = formatDuration(this.player.currentTime);
     if (totalDurEl) totalDurEl.textContent = formatDuration(this.player.duration);
 
-    if (seekSlider && this.player.duration > 0) {
-      seekSlider.value = ((this.player.currentTime / this.player.duration) * 100).toFixed(1);
+    if (seekSlider) {
+      const progressPercent = (this.player.duration > 0 && Number.isFinite(this.player.currentTime))
+        ? ((this.player.currentTime / this.player.duration) * 100).toFixed(1)
+        : '0';
+      seekSlider.value = progressPercent;
+      seekSlider.style.setProperty('--range-progress', `${progressPercent}%`);
+    }
+
+    const volSlider = document.getElementById('player-volume-slider');
+    const volIcon = document.getElementById('volume-icon');
+    const volText = document.getElementById('volume-level-text');
+    if (volSlider) {
+      const volVal = (this.player.audioElement && typeof this.player.audioElement.volume === 'number') 
+        ? this.player.audioElement.volume 
+        : 0.85;
+      const isMuted = this.player.audioElement ? this.player.audioElement.muted : false;
+      const volPercent = isMuted ? '0' : (volVal * 100).toFixed(1);
+      volSlider.value = isMuted ? 0 : volVal;
+      volSlider.style.setProperty('--range-progress', `${volPercent}%`);
+      if (volText) volText.textContent = `${isMuted ? 0 : Math.round(volVal * 100)}%`;
+      if (volIcon) {
+        if (isMuted || volVal === 0) {
+          volIcon.setAttribute('data-lucide', 'volume-x');
+        } else if (volVal < 0.5) {
+          volIcon.setAttribute('data-lucide', 'volume-1');
+        } else {
+          volIcon.setAttribute('data-lucide', 'volume-2');
+        }
+        if (window.lucide) window.lucide.createIcons({ root: volIcon.parentElement });
+      }
     }
 
     const shuffleBtn = document.getElementById('btn-player-shuffle');

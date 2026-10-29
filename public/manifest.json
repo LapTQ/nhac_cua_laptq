@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Nhạc của Lập",
   "short_name": "Nhạc của Lập",
-  "description": "Nhạc của Lập",
+  "description": "Trình nghe nhạc cá nhân PWA Serverless, đồng bộ Cloudflare R2 và lưu trữ offline IndexedDB",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
