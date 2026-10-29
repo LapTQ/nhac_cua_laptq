@@ -1,0 +1,39 @@
+{
+  "id": "/",
+  "name": "Symphony R2 - Máy Nghe Nhạc PWA",
+  "short_name": "Symphony R2",
+  "description": "Trình nghe nhạc cá nhân PWA Serverless, đồng bộ Cloudflare R2 và lưu trữ offline IndexedDB",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#14110e",
+  "theme_color": "#1f1a16",
+  "categories": ["music", "audio", "utilities"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
