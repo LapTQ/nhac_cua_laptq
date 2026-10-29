@@ -375,25 +375,25 @@
           <button 
             type="button" 
             id="tab-btn-sync" 
-            class="flex-1 py-2 text-xs font-semibold border-b-2 border-white text-white flex items-center justify-center gap-1.5 transition"
+            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-semibold border-b-2 border-white text-white flex items-center justify-center gap-1 sm:gap-1.5 transition"
           >
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
             <span>Đồng Bộ 1-Chạm</span>
           </button>
           <button 
             type="button" 
             id="tab-btn-r2" 
-            class="flex-1 py-2 text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1.5 transition"
+            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1 sm:gap-1.5 transition"
           >
-            <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
+            <i data-lucide="cloud" class="w-3.5 h-3.5 shrink-0"></i>
             <span>Cloudflare R2</span>
           </button>
           <button 
             type="button" 
             id="tab-btn-rapidapi" 
-            class="flex-1 py-2 text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1.5 transition"
+            class="flex-1 py-2 px-1 text-[11px] sm:text-xs font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1 sm:gap-1.5 transition"
           >
-            <i data-lucide="youtube" class="w-3.5 h-3.5 text-red-500"></i>
+            <i data-lucide="youtube" class="w-3.5 h-3.5 text-red-500 shrink-0"></i>
             <span>RapidAPI YouTube</span>
           </button>
         </div>
@@ -551,7 +551,7 @@
           <div class="mt-4 p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 leading-relaxed">
             <strong class="text-zinc-200">Quy tắc CORS trên Cloudflare R2:</strong>
             <code class="block font-mono bg-zinc-900 p-1.5 rounded mt-1 text-[10px] text-zinc-300 overflow-x-auto">
-              AllowedOrigins: ["*"] | AllowedMethods: ["GET", "PUT", "DELETE", "HEAD"]
+              AllowedOrigins: ["*"] | AllowedMethods: ["GET", "PUT", "DELETE", "HEAD"] | AllowedHeaders: ["*"]
             </code>
           </div>
         </div>
