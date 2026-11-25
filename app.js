@@ -2231,7 +2231,7 @@ class SymphonyApp {
             fileName: fileKey,
             size: audioBlob.size,
             duration: this.currentYouTubeInfo.duration || 0,
-            tags: sharedTags.length > 0 ? [...sharedTags] : ['youtube'],
+            tags: [...sharedTags],
             createdAt: Date.now()
           };
 
