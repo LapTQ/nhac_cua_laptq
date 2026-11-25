@@ -1959,7 +1959,7 @@ class SymphonyApp {
       return;
     }
 
-    wrapper.innerHTML = allTags.slice(0, 8).map(t => `
+    wrapper.innerHTML = allTags.map(t => `
       <button type="button" class="upload-tag-chip px-2 py-0.5 rounded bg-purple-900/60 hover:bg-purple-800 text-[11px] text-purple-200 border border-purple-700/50 transition" data-tag="${escapeHTML(t.tag)}">
         + ${escapeHTML(t.tag)}
       </button>
